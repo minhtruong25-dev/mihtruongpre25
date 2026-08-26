@@ -1,14 +1,13 @@
 // ======================================================
 // 🏷️ CATEGORY DATA
 // ======================================================
-// Muốn thêm category mới, chỉ cần copy object bên dưới.
-// ID phải viết liền không dấu (vd: 'cong-nghe').
+// Thêm danh mục mới bằng cách copy một object bên dưới.
 
 const CATEGORIES = [
-    { id: "all", name: "🔥 Tất cả" },
-    { id: "cong-nghe", name: "💻 Công nghệ" },
-    { id: "gaming", name: "🎮 Gaming" },
-    { id: "hoc-tap", name: "📚 Học tập" },
-    { id: "gia-dung", name: "🏠 Gia dụng" },
-    { id: "thoi-trang", name: "👕 Thời trang" }
+    { id: "all", name: "🔥 Tất cả", icon: "" },
+    { id: "cong-nghe", name: "💻 Công nghệ", icon: "" },
+    { id: "gaming", name: "🎮 Gaming", icon: "" },
+    { id: "gia-dung", name: "🏠 Gia dụng", icon: "" },
+    { id: "thoi-trang", name: "👕 Thời trang", icon: "" },
+    { id: "hoc-tap", name: "📚 Học tập", icon: "" }
 ];
