@@ -1,6 +1,6 @@
 // ======================================================
-// ⚙️ LOGIC WEBSITE — KHÔNG CẦN SỬA PHẦN NÀY
-// Script xử lý UI, Render, Search, Filter, Sort và Theme.
+// ⚙️ LOGIC WEBSITE — KHÔNG CẦN CHỈNH SỬA
+// Xử lý Render, Search, Filter, Sort, Modal và Tracking
 // ======================================================
 
 const AppState = {
@@ -20,27 +20,31 @@ const setElText = (id, text) => {
     if (el) el.textContent = text || "";
 };
 
-// --- INIT APP ---
+// --- INITIALIZATION ---
 function initApp() {
     // 1. Setup SEO & Metadata
     document.title = SITE_CONFIG.seoTitle;
     document.querySelector('meta[name="description"]')?.setAttribute("content", SITE_CONFIG.seoDescription);
 
-    // 2. Setup Profile / Hero
+    // 2. Setup Profile & Hero
     setElText('nav-brand-name', SITE_CONFIG.siteName);
-    setElText('profile-name', SITE_CONFIG.authorName);
-    setElText('profile-username', SITE_CONFIG.username);
-    setElText('profile-bio', SITE_CONFIG.bio);
+    setElText('hero-author', SITE_CONFIG.authorName);
+    setElText('hero-username', SITE_CONFIG.username);
+    setElText('hero-bio', SITE_CONFIG.bio);
     setElText('footer-brand', SITE_CONFIG.siteName);
+    setElText('footer-author', SITE_CONFIG.authorName);
     setElText('current-year', new Date().getFullYear());
 
-    const avatarEl = document.getElementById('profile-avatar');
+    // Setup Avatar with Fallback
+    const avatarEl = document.getElementById('hero-avatar');
     if (avatarEl && SITE_CONFIG.avatar) {
         avatarEl.src = SITE_CONFIG.avatar;
-        avatarEl.onerror = () => avatarEl.src = "https://placehold.co/150x150/171717/a1a1aa?text=Avatar";
+        avatarEl.onerror = () => {
+            avatarEl.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e5e7eb'/%3E%3Cpath d='M50 55c-11 0-20-9-20-20s9-20 20-20 20 9 20 20-9 20-20 20zm0 5c15 0 30 7.5 30 22.5V90H20v-7.5C20 67.5 35 60 50 60z' fill='%239ca3af'/%3E%3C/svg%3E";
+        };
     }
 
-    // 3. Setup Socials
+    // 3. Setup Social Links
     const socialContainer = document.getElementById('social-container');
     if (socialContainer) {
         let html = '';
@@ -53,14 +57,14 @@ function initApp() {
         socialContainer.innerHTML = html;
     }
 
-    // 4. Render Categories & Products
+    // 4. Render UI
     renderCategories();
     renderProducts();
     setupEventListeners();
     initTheme();
 }
 
-// --- RENDER ---
+// --- RENDER FUNCTIONS ---
 function renderCategories() {
     const container = document.getElementById('category-container');
     if (!container) return;
@@ -70,61 +74,76 @@ function renderCategories() {
 }
 
 function renderProducts() {
-    const container = document.getElementById('product-container');
+    const grid = document.getElementById('product-container');
+    const featuredContainer = document.getElementById('featured-container');
     const emptyState = document.getElementById('empty-state');
-    if (!container || !emptyState) return;
+    if (!grid || !featuredContainer || !emptyState) return;
 
     const term = AppState.searchQuery.toLowerCase();
 
-    // Lọc
+    // Lọc theo Category + Search (Title, Desc, Tags)
     let filtered = PRODUCTS.filter(p => {
         const matchCat = AppState.category === 'all' || p.category === AppState.category;
-        const matchSearch = p.name.toLowerCase().includes(term) || (p.description && p.description.toLowerCase().includes(term));
+        const matchSearch = p.name.toLowerCase().includes(term) || 
+                           (p.description && p.description.toLowerCase().includes(term)) ||
+                           (p.tags && p.tags.join(' ').toLowerCase().includes(term));
         return matchCat && matchSearch;
     });
 
-    // Sắp xếp
+    // Sort
     filtered.sort((a, b) => {
         if (AppState.sort === 'price-asc') return a.price - b.price;
         if (AppState.sort === 'price-desc') return b.price - a.price;
-        if (AppState.sort === 'discount') return b.discount - a.discount;
-        return (b.featured === true) - (a.featured === true); // Featured mặc định
+        if (AppState.sort === 'discount-desc') return b.discount - a.discount;
+        if (AppState.sort === 'rating-desc') return b.rating - a.rating;
+        return 0; // Default / Featured
     });
 
     if (filtered.length === 0) {
-        container.innerHTML = '';
+        grid.innerHTML = ''; featuredContainer.innerHTML = '';
         emptyState.classList.remove('hidden');
         return;
     }
 
     emptyState.classList.add('hidden');
-    container.innerHTML = filtered.map(p => {
-        const badge = p.badge ? `<span class="card-badge">${p.badge}</span>` : '';
-        const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
-        const price = p.price ? formatCurrency(p.price) : 'Cập nhật';
-        const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/171717/a1a1aa?text=No+Image'`;
 
-        return `
-            <article class="product-card js-product-card" data-id="${p.id}">
-                <div class="card-img-wrap">
-                    ${badge}
-                    <img src="${p.image}" alt="${p.name}" class="card-img" loading="lazy" onerror="${fallback}">
+    // Tách Featured Product (Lấy sản phẩm đầu tiên có featured=true)
+    const featuredProduct = filtered.find(p => p.featured === true && AppState.sort === 'featured');
+    const normalProducts = featuredProduct ? filtered.filter(p => p.id !== featuredProduct.id) : filtered;
+
+    featuredContainer.innerHTML = featuredProduct ? generateCardHTML(featuredProduct, true) : '';
+    grid.innerHTML = normalProducts.map(p => generateCardHTML(p, false)).join('');
+}
+
+function generateCardHTML(p, isFeatured) {
+    const badge = p.badge ? `<span class="card-badge">${p.badge}</span>` : '';
+    const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
+    const price = p.price ? formatCurrency(p.price) : 'Đang cập nhật';
+    const discount = p.discount ? `<span class="discount">-${p.discount}%</span>` : '';
+    const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/171717/a1a1aa?text=No+Image'`;
+    const labelFeatured = isFeatured ? `<div style="color:var(--warning); font-size:0.85rem; font-weight:700; margin-bottom:8px; letter-spacing:1px;">🔥 ĐÁNG CHÚ Ý</div>` : '';
+
+    return `
+        <article class="product-card js-product-card ${isFeatured ? 'featured-card' : ''}" data-id="${p.id}" tabindex="0">
+            <div class="card-img-wrap">
+                ${badge}
+                <img src="${p.image}" alt="${p.name}" class="card-img" loading="lazy" onerror="${fallback}">
+            </div>
+            <div class="card-info">
+                ${labelFeatured}
+                <h3 class="card-title">${p.name}</h3>
+                <p class="card-desc hidden ${isFeatured ? 'mobile-only desktop-only' : ''}" style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:12px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${p.description}</p>
+                <div class="card-rating">
+                    <i class='bx bxs-star'></i> <span>${p.rating} (${p.reviews})</span>
                 </div>
-                <div class="card-info">
-                    <h3 class="card-title">${p.name}</h3>
-                    <div class="card-rating">
-                        <i class='bx bxs-star'></i>
-                        <span>${p.rating} (${p.reviews})</span>
-                    </div>
-                    <div class="card-price-wrap">
-                        <span class="card-price">${price}</span>
-                        ${oldPrice}
-                    </div>
-                    <button class="card-cta">Xem chi tiết</button>
+                <div class="card-price-wrap">
+                    <span class="card-price">${price}</span>
+                    <div style="display:flex; gap:8px; align-items:center;">${oldPrice} ${discount}</div>
                 </div>
-            </article>
-        `;
-    }).join('');
+                <button class="card-cta" aria-label="Xem chi tiết ${p.name}">Xem chi tiết</button>
+            </div>
+        </article>
+    `;
 }
 
 // --- MODAL & AFFILIATE ---
@@ -150,7 +169,7 @@ function openModal(id) {
                 </div>
                 <p class="modal-desc">${p.description}</p>
                 <button class="btn-primary modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl}" data-id="${p.id}">
-                    Đến nơi bán (Shopee) <i class='bx bx-link-external'></i>
+                    Xem trên Shopee <i class='bx bx-link-external'></i>
                 </button>
             </div>
         </div>
@@ -167,10 +186,10 @@ function closeModal() {
 
 function handleAffiliateClick(link, id) {
     if (!SITE_CONFIG.affiliateEnabled || !link || link.trim() === "") {
-        alert("Link mua hàng đang được cập nhật. Bạn vui lòng quay lại sau nhé!");
+        alert("Link mua hàng chưa được cập nhật. Bạn vui lòng quay lại sau nhé!");
         return;
     }
-    // Track click locally
+    // Track click locally (Không gửi server, chỉ lưu lịch sử trên máy)
     try {
         let clicks = JSON.parse(localStorage.getItem('mt_clicks') || '{}');
         clicks[id] = (clicks[id] || 0) + 1;
@@ -182,11 +201,11 @@ function handleAffiliateClick(link, id) {
 
 // --- EVENTS ---
 function setupEventListeners() {
-    // Search
-    let debounceTimer;
+    // Search (Debounce)
+    let searchTimeout;
     document.getElementById('search-input')?.addEventListener('input', (e) => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
             AppState.searchQuery = e.target.value;
             renderProducts();
         }, 300);
@@ -203,7 +222,7 @@ function setupEventListeners() {
         document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
     });
 
-    // Event Delegation cho toàn bộ Body
+    // Event Delegation (Click tập trung)
     document.body.addEventListener('click', (e) => {
         // Category Click
         const catBtn = e.target.closest('.js-cat-btn');
@@ -230,8 +249,15 @@ function setupEventListeners() {
             return;
         }
 
-        // Đóng Modal
-        if (e.target.closest('#close-modal') || e.target.classList.contains('modal-overlay')) {
+        // Đóng Modal (Nút X hoặc Bấm ra ngoài)
+        if (e.target.closest('#close-modal') || e.target.id === 'product-modal') {
+            closeModal();
+        }
+    });
+
+    // Bấm ESC để đóng modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !document.getElementById('product-modal').classList.contains('hidden')) {
             closeModal();
         }
     });
@@ -240,7 +266,7 @@ function setupEventListeners() {
     const btt = document.getElementById('back-to-top');
     if (btt) {
         window.addEventListener('scroll', () => {
-            btt.classList.toggle('hidden', window.scrollY < 300);
+            btt.classList.toggle('hidden', window.scrollY < 400);
         });
         btt.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
     }
@@ -251,19 +277,21 @@ function initTheme() {
     const btn = document.getElementById('theme-toggle');
     if (!btn) return;
     
+    // Check LocalStorage
     if (localStorage.getItem('mt_theme') === 'light') {
         document.body.classList.add('light-theme');
         document.body.classList.remove('dark-theme');
-        btn.innerHTML = "<i class='bx bx-sun'></i>";
+        btn.innerHTML = "<i class='bx bx-moon'></i>";
     }
 
     btn.addEventListener('click', () => {
         const isLight = document.body.classList.toggle('light-theme');
         document.body.classList.toggle('dark-theme', !isLight);
         localStorage.setItem('mt_theme', isLight ? 'light' : 'dark');
-        btn.innerHTML = isLight ? "<i class='bx bx-sun'></i>" : "<i class='bx bx-moon'></i>";
+        btn.innerHTML = isLight ? "<i class='bx bx-moon'></i>" : "<i class='bx bx-sun'></i>";
     });
 }
 
-// RUN APP
+// KHỞI CHẠY (Chỉ 1 DOMContentLoaded)
 document.addEventListener('DOMContentLoaded', initApp);
+        
