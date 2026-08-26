@@ -9,14 +9,14 @@ const SITE_CONFIG = {
     // ✏️ THÔNG TIN CÁ NHÂN & BRANDING
     siteName: "MT Deals",
     authorName: "Minh Trường",
-    username: "@minhtruong",
+    username: "@minhtruong06",
     bio: "Khám phá những sản phẩm hữu ích cho học tập, làm việc, giải trí và cuộc sống.",
     
     // ✏️ AVATAR (Dán link ảnh thật của bạn vào đây)
-    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
+    avatar: "https://cdn.phototourl.com/free/2026-08-26-2672cb9f-f9e3-412f-8ebb-02e5868cce61.jpg",
 
     // ✏️ SOCIAL LINKS (Để rỗng "" nếu không có, icon sẽ tự ẩn)
-    email: "",
+    email: "truonghehe144@gmail.com",
     social: {
         facebook: "",
         tiktok: "",
