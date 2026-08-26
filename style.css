@@ -65,7 +65,7 @@ body.light-theme {
    RESET & TYPOGRAPHY
    ===================================================== */
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
 body {
     font-family: 'Inter', system-ui, sans-serif;
     background: var(--bg-base); color: var(--text-primary);
@@ -110,7 +110,7 @@ img { max-width: 100%; display: block; }
 .hero-section { position: relative; padding: 120px 16px 60px; text-align: center; }
 .hero-bg-glow {
     position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-    width: 600px; height: 400px; background: radial-gradient(circle, var(--shadow-glow) 0%, transparent 70%);
+    width: 100%; max-width: 600px; height: 400px; background: radial-gradient(circle, var(--shadow-glow) 0%, transparent 70%);
     z-index: -1; pointer-events: none;
 }
 .hero-content { max-width: 700px; margin: 0 auto; }
