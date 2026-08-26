@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://minhtruong25-dev.github.io/mihtruongpre25/sitemap.xml

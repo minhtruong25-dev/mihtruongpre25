@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MT Deals</title>
+    <meta name="description" content="Khám phá những sản phẩm hữu ích cho học tập, làm việc, giải trí và cuộc sống.">
+    
+    <!-- Open Graph / SEO -->
+    <meta property="og:title" content="MT Deals — Khám phá sản phẩm đáng mua">
+    <meta property="og:description" content="Khám phá những sản phẩm hữu ích cho học tập, làm việc, giải trí và cuộc sống.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://minhtruong25-dev.github.io/mihtruongpre25/">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme"> <!-- Khởi tạo mặc định -->
+
+    <!-- Navbar -->
+    <nav class="navbar" aria-label="Main Navigation">
+        <div class="nav-container">
+            <a href="#" class="brand-logo" aria-label="Trang chủ">
+                <i class='bx bx-cube-alt'></i>
+                <span id="nav-brand-name">MT Deals</span>
+            </a>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">
+                <i class='bx bx-moon'></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero / Profile Section -->
+    <header class="hero-section">
+        <div class="hero-content">
+            <div class="profile-wrap">
+                <img id="profile-avatar" src="" alt="Avatar" class="avatar" loading="eager">
+                <h1 id="profile-name" class="profile-name"></h1>
+                <p id="profile-username" class="profile-username"></p>
+                <p id="profile-bio" class="profile-bio"></p>
+            </div>
+            
+            <div id="social-container" class="social-links" aria-label="Mạng xã hội">
+                <!-- JS Render Socials -->
+            </div>
+
+            <button id="hero-cta" class="btn-primary hero-cta">🔥 Xem deal hôm nay</button>
+        </div>
+    </header>
+
+    <main class="main-container" id="products-section">
+        <!-- Search & Filter -->
+        <section class="filter-section">
+            <div class="search-box">
+                <i class='bx bx-search'></i>
+                <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm, thương hiệu..." aria-label="Tìm kiếm">
+            </div>
+
+            <div class="category-wrapper">
+                <div class="category-scroll" id="category-container">
+                    <!-- JS Render Categories -->
+                </div>
+            </div>
+
+            <div class="sort-box">
+                <select id="sort-select" aria-label="Sắp xếp sản phẩm">
+                    <option value="featured">🔥 Nổi bật nhất</option>
+                    <option value="price-asc">💰 Giá thấp → cao</option>
+                    <option value="price-desc">💎 Giá cao → thấp</option>
+                    <option value="discount">🏷️ Giảm giá sâu</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Product Grid -->
+        <section class="products-grid" id="product-container" aria-label="Danh sách sản phẩm">
+            <!-- JS Render Products -->
+        </section>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state hidden">
+            <i class='bx bx-ghost'></i>
+            <p>Không tìm thấy sản phẩm phù hợp.</p>
+        </div>
+
+        <!-- Trust Section -->
+        <section class="trust-section">
+            <h3>Minh bạch Affiliate</h3>
+            <p>Một số liên kết trên website là liên kết affiliate. Khi bạn mua hàng thông qua các liên kết này, tôi có thể nhận được một khoản hoa hồng nhỏ từ nền tảng <strong>mà không làm tăng giá sản phẩm của bạn</strong>.</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; <span id="current-year"></span> <span id="footer-brand"></span>. All rights reserved.</p>
+    </footer>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal hidden" aria-hidden="true" role="dialog">
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn" aria-label="Đóng"><i class='bx bx-x'></i></button>
+            <div id="modal-body">
+                <!-- JS Render Modal Info -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to top -->
+    <button id="back-to-top" class="back-to-top hidden" aria-label="Lên đầu trang">
+        <i class='bx bx-up-arrow-alt'></i>
+    </button>
+
+    <!-- Scripts (Tải theo thứ tự) -->
+    <script src="config.js"></script>
+    <script src="data/categories.js"></script>
+    <script src="data/products.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
