@@ -182,8 +182,66 @@ img { max-width: 100%; display: block; }
 /* =====================================================
    PRODUCT CARDS
    ===================================================== */
-.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-@media (max-width: 380px) { .products-grid { grid-template-columns: 1fr; } } 
+/* Lưới sản phẩm mặc định (Desktop/Tablet) */
+.products-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+    gap: 20px; 
+}
+
+/* =========================================
+   ÉP 2 CỘT CHO MOBILE (Tối ưu 320px - 430px)
+   ========================================= */
+@media (max-width: 768px) {
+    /* Ép hiển thị đúng 2 cột, thu nhỏ khoảng cách */
+    .products-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 12px; 
+    }
+    
+    /* Tinh chỉnh bên trong Product Card để vừa màn hình nhỏ */
+    .card-info { 
+        padding: 10px; /* Giảm padding để nhường chỗ cho chữ */
+    }
+    
+    .card-badge {
+        top: 6px; left: 6px;
+        font-size: 0.65rem; padding: 4px 6px;
+    }
+    
+    .card-title { 
+        font-size: 0.85rem; 
+        margin-bottom: 6px; 
+        -webkit-line-clamp: 2; /* Cắt gọn 2 dòng để các card bằng nhau */
+        line-height: 1.4;
+    }
+    
+    .card-rating { 
+        font-size: 0.75rem; 
+        margin-bottom: 10px; 
+    }
+    
+    .card-price-wrap { 
+        margin-bottom: 10px; 
+        gap: 2px;
+        flex-direction: column; /* Đẩy giá cũ xuống dưới để tránh bị đè ngang */
+        align-items: flex-start;
+    }
+    
+    .card-price { 
+        font-size: 1rem; /* Giảm size giá nhưng vẫn đủ độ đậm */
+    }
+    
+    .card-old-price { 
+        font-size: 0.75rem; 
+    }
+    
+    .card-cta { 
+        padding: 8px 4px; 
+        font-size: 0.8rem; 
+        border-radius: var(--radius-sm);
+    }
+}
 
 .product-card {
     background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
