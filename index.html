@@ -6,7 +6,7 @@
     <title>MT Deals</title>
     <meta name="description" content="Khám phá những sản phẩm hữu ích cho học tập, làm việc, giải trí và cuộc sống.">
     
-    <!-- Open Graph / SEO -->
+    <!-- Open Graph SEO -->
     <meta property="og:title" content="MT Deals — Khám phá sản phẩm đáng mua">
     <meta property="og:description" content="Khám phá những sản phẩm hữu ích cho học tập, làm việc, giải trí và cuộc sống.">
     <meta property="og:type" content="website">
@@ -15,15 +15,15 @@
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-theme"> <!-- Khởi tạo mặc định -->
+<body class="dark-theme">
 
-    <!-- Navbar -->
+    <!-- NAVBAR -->
     <nav class="navbar" aria-label="Main Navigation">
         <div class="nav-container">
             <a href="#" class="brand-logo" aria-label="Trang chủ">
@@ -36,30 +36,38 @@
         </div>
     </nav>
 
-    <!-- Hero / Profile Section -->
+    <!-- HERO SECTION (Khôi phục Personal Branding đầy đủ) -->
     <header class="hero-section">
+        <div class="hero-glow"></div>
         <div class="hero-content">
-            <div class="profile-wrap">
-                <img id="profile-avatar" src="" alt="Avatar" class="avatar" loading="eager">
-                <h1 id="profile-name" class="profile-name"></h1>
-                <p id="profile-username" class="profile-username"></p>
-                <p id="profile-bio" class="profile-bio"></p>
+            <!-- Tách biệt Profile Branding -->
+            <div class="hero-profile">
+                <img id="hero-avatar" src="" alt="Minh Trường" class="avatar" loading="eager">
+                <h1 id="hero-author" class="hero-author-name"></h1>
+                <p id="hero-username" class="hero-username"></p>
+                <p id="hero-bio" class="hero-bio"></p>
+                <div id="social-container" class="social-links" aria-label="Mạng xã hội">
+                    <!-- JS Render Socials -->
+                </div>
             </div>
             
-            <div id="social-container" class="social-links" aria-label="Mạng xã hội">
-                <!-- JS Render Socials -->
+            <!-- Hero Message -->
+            <div class="hero-message">
+                <span class="hero-eyebrow">CURATED PRODUCTS & DEALS</span>
+                <h2 class="hero-title">Khám phá sản phẩm đáng mua</h2>
+                <p class="hero-subtitle">Tổng hợp những sản phẩm nổi bật, deal hấp dẫn và những lựa chọn đáng cân nhắc trên Shopee.</p>
+                <button id="hero-cta" class="btn-primary hero-cta">🔥 Xem deal hôm nay</button>
             </div>
-
-            <button id="hero-cta" class="btn-primary hero-cta">🔥 Xem deal hôm nay</button>
         </div>
     </header>
 
     <main class="main-container" id="products-section">
-        <!-- Search & Filter -->
-        <section class="filter-section">
+        
+        <!-- SEARCH & FILTER -->
+        <section class="filter-section" aria-label="Bộ lọc sản phẩm">
             <div class="search-box">
                 <i class='bx bx-search'></i>
-                <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm, thương hiệu..." aria-label="Tìm kiếm">
+                <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm, mô tả..." aria-label="Tìm kiếm">
             </div>
 
             <div class="category-wrapper">
@@ -73,51 +81,76 @@
                     <option value="featured">🔥 Nổi bật nhất</option>
                     <option value="price-asc">💰 Giá thấp → cao</option>
                     <option value="price-desc">💎 Giá cao → thấp</option>
-                    <option value="discount">🏷️ Giảm giá sâu</option>
+                    <option value="rating-desc">⭐ Rating cao</option>
+                    <option value="discount-desc">🏷️ Giảm giá cao</option>
                 </select>
             </div>
         </section>
 
-        <!-- Product Grid -->
-        <section class="products-grid" id="product-container" aria-label="Danh sách sản phẩm">
-            <!-- JS Render Products -->
+        <!-- FEATURED PRODUCT -->
+        <section id="featured-container" class="featured-wrapper" aria-label="Sản phẩm nổi bật">
+            <!-- JS Render -->
         </section>
 
-        <!-- Empty State -->
+        <!-- PRODUCT GRID -->
+        <section class="products-grid" id="product-container" aria-label="Danh sách sản phẩm">
+            <!-- JS Render -->
+        </section>
+
+        <!-- EMPTY STATE -->
         <div id="empty-state" class="empty-state hidden">
             <i class='bx bx-ghost'></i>
             <p>Không tìm thấy sản phẩm phù hợp.</p>
         </div>
 
-        <!-- Trust Section -->
+        <!-- ABOUT & TRUST SECTION -->
         <section class="trust-section">
-            <h3>Minh bạch Affiliate</h3>
-            <p>Một số liên kết trên website là liên kết affiliate. Khi bạn mua hàng thông qua các liên kết này, tôi có thể nhận được một khoản hoa hồng nhỏ từ nền tảng <strong>mà không làm tăng giá sản phẩm của bạn</strong>.</p>
+            <div class="trust-grid">
+                <div class="trust-card about-card">
+                    <h3>Về Minh Trường</h3>
+                    <p>MT Deals là nơi mình tuyển chọn những sản phẩm công nghệ, setup góc làm việc và tiện ích đời sống thực sự chất lượng để chia sẻ với mọi người.</p>
+                </div>
+                <div class="trust-card">
+                    <h3>Vì sao chọn MT Deals?</h3>
+                    <ul class="trust-list">
+                        <li><i class='bx bx-check-shield'></i> Tuyển chọn sản phẩm có chủ đích</li>
+                        <li><i class='bx bx-check-shield'></i> Ưu tiên sản phẩm có đánh giá tốt</li>
+                        <li><i class='bx bx-check-shield'></i> Liên kết trực tiếp đến nơi bán</li>
+                    </ul>
+                </div>
+            </div>
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- FOOTER & AFFILIATE DISCLOSURE -->
     <footer class="footer">
-        <p>&copy; <span id="current-year"></span> <span id="footer-brand"></span>. All rights reserved.</p>
+        <div class="footer-container">
+            <div class="affiliate-disclosure">
+                <p><strong>Minh bạch Affiliate:</strong> Một số liên kết trên website là liên kết affiliate. Khi bạn mua hàng thông qua các liên kết này, tôi có thể nhận được một khoản hoa hồng nhỏ <strong>mà không làm tăng giá sản phẩm của bạn</strong>.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> MT Deals by <span id="footer-author"></span>. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
 
-    <!-- Product Modal -->
+    <!-- PRODUCT MODAL -->
     <div id="product-modal" class="modal hidden" aria-hidden="true" role="dialog">
         <div class="modal-overlay" id="modal-overlay"></div>
         <div class="modal-content">
-            <button id="close-modal" class="close-btn" aria-label="Đóng"><i class='bx bx-x'></i></button>
+            <button id="close-modal" class="close-btn" aria-label="Đóng (ESC)"><i class='bx bx-x'></i></button>
             <div id="modal-body">
-                <!-- JS Render Modal Info -->
+                <!-- JS Render -->
             </div>
         </div>
     </div>
 
-    <!-- Back to top -->
+    <!-- BACK TO TOP -->
     <button id="back-to-top" class="back-to-top hidden" aria-label="Lên đầu trang">
         <i class='bx bx-up-arrow-alt'></i>
     </button>
 
-    <!-- Scripts (Tải theo thứ tự) -->
+    <!-- SCRIPTS (Tải đúng thứ tự theo Kiến trúc) -->
     <script src="config.js"></script>
     <script src="data/categories.js"></script>
     <script src="data/products.js"></script>
