@@ -10,7 +10,7 @@ const SITE_CONFIG = {
     siteName: "MT Deals",
     authorName: "Minh Trường",
     username: "@minhtruong06",
-    bio: "Mình chọn lọc những sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống, giúp bạn dễ dàng tìm thấy những món đồ đáng để tham khảo.",
+    bio: "Sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống.",
     
     // ✏️ AVATAR (Dán link ảnh thật của bạn vào đây)
     avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
@@ -31,5 +31,5 @@ const SITE_CONFIG = {
     // ✏️ SEO METADATA
     siteUrl: "https://minhtruong25-dev.github.io/mihtruongpre25/",
     seoTitle: "MT Deals — Khám phá sản phẩm đáng mua",
-    seoDescription: "Mình chọn lọc những sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống, giúp bạn dễ dàng tìm thấy những món đồ đáng để tham khảo."
+    seoDescription: "Sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống."
 };
