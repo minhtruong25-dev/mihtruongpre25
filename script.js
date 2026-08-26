@@ -182,8 +182,10 @@ function openModal(id) {
     const modal = document.getElementById('product-modal');
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-    modal.querySelector('.close-btn').focus();
+    
+    // ĐÃ XÓA LỆNH FOCUS() ĐỂ ĐIỆN THOẠI KHÔNG BỊ TỰ ĐỘNG PHÓNG TO
 }
+
 
 function closeModal() {
     document.getElementById('product-modal').classList.add('hidden');
