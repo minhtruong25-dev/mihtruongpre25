@@ -68,6 +68,7 @@ body {
     color: var(--text-primary); line-height: 1.6;
     transition: background var(--transition), color var(--transition);
     overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent; 
 }
 
 @media (prefers-reduced-motion: reduce) {
