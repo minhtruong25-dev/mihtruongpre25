@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>MT Deals — Khám phá sản phẩm đáng mua</title>
-    <meta name="description" content="Khám phá những sản phẩm hữu ích cho học tập, làm việc, giải trí và cuộc sống.">
+    <meta name="description" content="Mình chọn lọc những sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống, giúp bạn dễ dàng tìm thấy những món đồ đáng để tham khảo.">
     
-    <!-- SEO & Open Graph -->
+    <!-- Open Graph SEO -->
     <meta property="og:title" content="MT Deals — Khám phá sản phẩm đáng mua">
-    <meta property="og:description" content="Khám phá những sản phẩm hữu ích cho học tập, làm việc, giải trí và cuộc sống.">
+    <meta property="og:description" content="Mình chọn lọc những sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống, giúp bạn dễ dàng tìm thấy những món đồ đáng để tham khảo.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://minhtruong25-dev.github.io/mihtruongpre25/">
     <link rel="canonical" href="https://minhtruong25-dev.github.io/mihtruongpre25/">
 
     <!-- Fonts & Icons -->
@@ -20,11 +19,11 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.0">
 </head>
 <body class="dark-theme">
 
-    <!-- NAVBAR (Glassmorphism) -->
+    <!-- NAVBAR -->
     <nav class="navbar" aria-label="Main Navigation">
         <div class="nav-container">
             <a href="#" class="brand-logo" aria-label="Trang chủ">
@@ -37,26 +36,27 @@
         </div>
     </nav>
 
-    <!-- HERO SECTION (Premium Personal Branding) -->
+    <!-- HERO SECTION -->
     <header class="hero-section">
         <div class="hero-bg-glow"></div>
         <div class="hero-content">
             <div class="hero-profile fade-up">
                 <div class="avatar-ring">
-                    <img id="hero-avatar" src="" alt="Avatar" class="avatar" loading="eager">
+                    <img id="hero-avatar" src="" alt="Minh Trường" class="avatar" loading="eager">
                 </div>
                 <h1 id="hero-author" class="hero-author-name"></h1>
                 <p id="hero-username" class="hero-username"></p>
-                <p id="hero-bio" class="hero-bio"></p>
+                <!-- Dòng bio bị ẩn để hiển thị câu riêng biệt bên dưới theo yêu cầu -->
+                <p id="hero-bio" class="hero-bio hidden"></p>
                 <div id="social-container" class="social-links" aria-label="Mạng xã hội">
                     <!-- JS Render -->
                 </div>
             </div>
             
             <div class="hero-message fade-up delay-1">
-                <span class="hero-eyebrow">Curated Products & Deals</span>
-                <h2 class="hero-title">Khám phá sản phẩm <span class="text-gradient">đáng mua</span></h2>
-                <button id="hero-cta" class="btn-primary hero-cta">🔥 Xem deal hôm nay</button>
+                <h2 class="hero-title">Khám phá những món đồ<br><span class="text-gradient">đáng mua</span></h2>
+                <p class="hero-subtitle">Mình chọn lọc những sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống, giúp bạn dễ dàng tìm thấy những món đồ đáng để tham khảo.</p>
+                <button id="hero-cta" class="btn-primary hero-cta">🔥 Khám phá sản phẩm</button>
             </div>
         </div>
     </header>
@@ -68,6 +68,12 @@
             <div class="search-box">
                 <i class='bx bx-search'></i>
                 <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm, tag..." aria-label="Tìm kiếm">
+            </div>
+
+            <!-- TIÊU ĐỀ CATEGORY -->
+            <div style="margin-top: 8px; width: 100%;">
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Khám phá theo danh mục</h2>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 12px;">Tìm nhanh những sản phẩm phù hợp với nhu cầu của bạn.</p>
             </div>
 
             <div class="category-wrapper">
@@ -88,11 +94,19 @@
         </section>
 
         <!-- FEATURED PRODUCT -->
+        <div style="margin-top: 32px; margin-bottom: 16px;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Đáng chú ý</h2>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">Một số sản phẩm nổi bật mà mình nghĩ bạn nên xem qua.</p>
+        </div>
         <section id="featured-container" class="featured-wrapper" aria-label="Sản phẩm nổi bật">
             <!-- JS Render -->
         </section>
 
         <!-- PRODUCT GRID -->
+        <div style="margin-top: 40px; margin-bottom: 24px;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">Những sản phẩm đáng chú ý</h2>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">Những sản phẩm mình đã chọn lọc để bạn dễ dàng khám phá, tham khảo và tìm được món đồ phù hợp.</p>
+        </div>
         <section class="products-grid" id="product-container" aria-label="Danh sách sản phẩm">
             <!-- JS Render -->
         </section>
@@ -104,22 +118,59 @@
         </div>
 
         <!-- ABOUT & TRUST SECTION -->
-        <section class="trust-section fade-up">
+        <section class="trust-section fade-up" style="margin-top: 48px;">
             <div class="trust-grid">
+                <!-- About -->
                 <div class="trust-card about-card">
                     <div class="trust-icon"><i class='bx bx-user-circle'></i></div>
                     <h3>Về Minh Trường</h3>
-                    <p>MT Deals là nơi mình tuyển chọn những sản phẩm công nghệ, setup góc làm việc và tiện ích đời sống thực sự chất lượng, giúp bạn đưa ra quyết định mua sắm thông minh hơn.</p>
+                    <p>MT Deals là nơi mình chia sẻ và tuyển chọn những sản phẩm hữu ích, thú vị và đáng để tham khảo.<br><br>Từ công nghệ, gaming, học tập đến những món đồ nhỏ hữu ích trong cuộc sống, mình muốn giúp bạn tìm kiếm sản phẩm dễ dàng hơn và tiết kiệm thời gian hơn.</p>
                 </div>
+                
+                <!-- Trust -->
                 <div class="trust-card">
                     <div class="trust-icon"><i class='bx bx-check-shield'></i></div>
-                    <h3>Tiêu chí chọn lọc</h3>
-                    <ul class="trust-list">
-                        <li><i class='bx bx-check'></i> <span>Sản phẩm hữu ích thực tế</span></li>
-                        <li><i class='bx bx-check'></i> <span>Ưu tiên lượt đánh giá cao</span></li>
-                        <li><i class='bx bx-check'></i> <span>Dẫn link trực tiếp đến nơi bán uy tín</span></li>
+                    <h3>Khám phá dễ dàng hơn</h3>
+                    <ul class="trust-list" style="display: flex; flex-direction: column; gap: 16px;">
+                        <li style="align-items: flex-start;">
+                            <i class='bx bx-search-alt' style="font-size: 1.5rem; margin-top: 2px;"></i>
+                            <div style="display: flex; flex-direction: column;">
+                                <strong style="color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">🔎 Chọn lọc</strong>
+                                <span>Ưu tiên những sản phẩm đáng để bạn dành thời gian tìm hiểu.</span>
+                            </div>
+                        </li>
+                        <li style="align-items: flex-start;">
+                            <i class='bx bx-detail' style="font-size: 1.5rem; margin-top: 2px;"></i>
+                            <div style="display: flex; flex-direction: column;">
+                                <strong style="color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">📝 Thông tin rõ ràng</strong>
+                                <span>Những thông tin cần thiết được trình bày để bạn dễ tham khảo.</span>
+                            </div>
+                        </li>
+                        <li style="align-items: flex-start;">
+                            <i class='bx bx-link-external' style="font-size: 1.5rem; margin-top: 2px;"></i>
+                            <div style="display: flex; flex-direction: column;">
+                                <strong style="color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">🔗 Đi đến nơi bán</strong>
+                                <span>Khi tìm được sản phẩm phù hợp, bạn có thể xem thêm thông tin tại nơi bán.</span>
+                            </div>
+                        </li>
+                        <li style="align-items: flex-start;">
+                            <i class='bx bx-brain' style="font-size: 1.5rem; margin-top: 2px;"></i>
+                            <div style="display: flex; flex-direction: column;">
+                                <strong style="color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">💭 Tự quyết định</strong>
+                                <span>MT Deals giúp bạn khám phá và tham khảo. Quyết định mua hàng luôn thuộc về bạn.</span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
+            </div>
+        </section>
+
+        <!-- CTA CUỐI -->
+        <section class="trust-section fade-up" style="margin-top: 32px;">
+            <div class="trust-card" style="text-align: center; padding: 48px 24px;">
+                <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; color: var(--text-primary);">Đang tìm một món đồ hay?</h2>
+                <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 24px;">Khám phá những sản phẩm mình đã chọn và xem thử có món nào phù hợp với bạn.</p>
+                <button class="btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">🔥 Khám phá ngay</button>
             </div>
         </section>
     </main>
@@ -129,16 +180,20 @@
         <div class="footer-container">
             <div class="affiliate-disclosure">
                 <i class='bx bx-info-circle'></i>
-                <p><strong>Minh bạch Affiliate:</strong> Một số liên kết trên website là liên kết tiếp thị. Khi bạn mua hàng qua các link này, mình có thể nhận được một khoản hoa hồng nhỏ để duy trì website <strong>mà không làm tăng giá sản phẩm của bạn</strong>.</p>
+                <p><strong>Minh bạch:</strong> Một số liên kết trên MT Deals là liên kết affiliate. Nếu bạn mua hàng thông qua các liên kết này, mình có thể nhận được một khoản hoa hồng từ nền tảng hoặc đối tác mà không làm tăng số tiền bạn phải trả.</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; <span id="current-year"></span> MT Deals by <span id="footer-author"></span>. All rights reserved.</p>
+            
+            <div class="footer-bottom" style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <div style="font-weight: 700; font-size: 1.15rem; color: var(--text-primary);">MT Deals</div>
+                <div style="color: var(--text-secondary); font-weight: 500;">Minh Trường · @minhtruong06</div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 400px; margin: 8px auto 16px;">"Những món đồ đáng mua, được chọn để bạn dễ khám phá."</p>
+                <p>&copy; <span id="current-year"></span> MT Deals. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- PRODUCT MODAL -->
-    <div id="product-modal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="product-modal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
         <div class="modal-overlay" id="modal-overlay" aria-label="Đóng modal"></div>
         <div class="modal-content">
             <button id="close-modal" class="close-btn" aria-label="Đóng (ESC)"><i class='bx bx-x'></i></button>
