@@ -1,14 +1,14 @@
 // ======================================================
 // 🛒 PRODUCT DATA
 // ======================================================
-// Dán link affiliate Shopee thật của bạn vào thuộc tính "affiliateUrl".
+// Dán link affiliate Shopee thật của bạn vào "affiliateUrl".
 // Nếu chưa có link, hãy để rỗng "".
 // ======================================================
 
 const PRODUCTS = [
     {
         id: "prod-001",
-        featured: true,
+        featured: true, // true = Sản phẩm nổi bật (chỉ nên có 1)
         name: "[DEMO] Bàn phím cơ Custom Không Dây",
         image: "https://images.unsplash.com/photo-1595225476474-87563907a212?w=500",
         price: 450000,
@@ -18,7 +18,7 @@ const PRODUCTS = [
         reviews: 120,
         category: "cong-nghe",
         badge: "HOT",
-        description: "Gõ siêu êm, có LED RGB, layout 75% gọn gàng. Phù hợp cho coder và học sinh sinh viên làm việc đêm không sợ ồn.",
+        description: "Gõ siêu êm, có LED RGB, layout 75% gọn gàng. Phù hợp làm việc đêm không ồn.",
         tags: ["ban phim", "setup", "cong nghe"],
         affiliateUrl: "" // ✏️ Dán link Affiliate vào đây
     },
