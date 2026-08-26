@@ -19,7 +19,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=2.0">
+    <link rel="stylesheet" href="style.css?v=2.1">
 </head>
 <body class="dark-theme">
 
@@ -36,7 +36,7 @@
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION (Đã tinh chỉnh tinh tế) -->
     <header class="hero-section">
         <div class="hero-bg-glow"></div>
         <div class="hero-content">
@@ -44,7 +44,8 @@
                 <div class="avatar-ring">
                     <img id="hero-avatar" src="" alt="Minh Trường" class="avatar" loading="eager">
                 </div>
-                <h1 id="hero-author" class="hero-author-name"></h1>
+                <!-- Đổi thành thẻ div để nhường H1 cho tiêu đề chính, tốt cho SEO -->
+                <div id="hero-author" class="hero-author-name"></div>
                 <p id="hero-username" class="hero-username"></p>
                 <p id="hero-bio" class="hero-bio hidden"></p>
                 <div id="social-container" class="social-links" aria-label="Mạng xã hội">
@@ -53,9 +54,9 @@
             </div>
             
             <div class="hero-message fade-up delay-1">
-                <h2 class="hero-title">Khám phá những món đồ<br><span class="text-gradient">đáng mua</span></h2>
-                <p class="hero-subtitle">Sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống.</p>
-                <button id="hero-cta" class="btn-primary hero-cta">🔥 Khám phá sản phẩm</button>
+                <h1 class="hero-title">Khám phá những món đồ<br><span class="text-gradient">đáng mua</span></h1>
+                <p class="hero-subtitle">Công nghệ &middot; Gaming &middot; Học tập &middot; Đời sống</p>
+                <button id="hero-cta" class="btn-primary hero-cta">🔥 Xem sản phẩm</button>
             </div>
         </div>
     </header>
@@ -166,7 +167,7 @@
                 <div style="font-weight: 700; font-size: 1.15rem; color: var(--text-primary);">MT Deals</div>
                 <div style="color: var(--text-secondary); font-weight: 500;">Minh Trường · @minhtruong06</div>
                 <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 400px; margin: 8px auto 16px;">"Khám phá những món đồ đáng mua."</p>
-                <p>&copy; 2026 Minh Trường. All rights reserved.</p>
+                <p>&copy; <span id="current-year"></span> Minh Trường. All rights reserved.</p>
             </div>
         </div>
     </footer>
