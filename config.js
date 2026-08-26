@@ -19,7 +19,7 @@ const SITE_CONFIG = {
     email: "truonghehe144@gmail.com",
     social: {
         facebook: "",
-        tiktok: "",
+        tiktok: "https://www.tiktok.com/@minhtruong24z?_r=1&_t=ZS-99D40t2hhYt",
         instagram: "",
         youtube: "",
         github: ""
