@@ -16,10 +16,10 @@ const SITE_CONFIG = {
     avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
 
     // ✏️ CONTACT & SOCIAL (Để rỗng "" nếu không có, icon sẽ tự ẩn)
-    email: "",
+    email: "truonghehe144@gmail.com",
     social: {
         facebook: "",
-        tiktok: "",
+        tiktok: "https://www.tiktok.com/@minhtruong24z?_r=1&_t=ZS-99Da94IwBz6",
         instagram: "",
         youtube: "",
         github: ""
