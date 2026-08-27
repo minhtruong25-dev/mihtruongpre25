@@ -9,11 +9,10 @@
     <meta property="og:title" content="MT Deals — Khám phá sản phẩm đáng mua">
     <meta property="og:description" content="Sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống.">
     <meta property="og:type" content="website">
-    <link rel="canonical" href="https://minhtruong25-dev.github.io/mihtruongpre25/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link rel="stylesheet" href="style.css?v=3.0">
@@ -23,8 +22,8 @@
     <nav class="navbar" aria-label="Main Navigation">
         <div class="nav-container">
             <a href="#" class="brand-logo" aria-label="Trang chủ">
-                <i class='bx bx-cube-alt'></i>
-                <span id="nav-brand-name">MT Deals</span>
+                <i class='bx bx-layer'></i>
+                <span>MT Deals</span>
             </a>
             <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">
                 <i class='bx bx-moon'></i>
@@ -34,22 +33,19 @@
 
     <header class="hero-section">
         <div class="hero-content">
-            <div class="hero-profile">
-                <div class="avatar-ring">
-                    <img id="hero-avatar" src="" alt="Minh Trường" class="avatar" loading="eager">
-                </div>
-                <div id="hero-author" class="hero-author-name"></div>
-                <p id="hero-username" class="hero-username"></p>
-                <p id="hero-bio" class="hero-bio hidden"></p>
-                <div id="social-container" class="social-links" aria-label="Mạng xã hội">
-                    <!-- JS Render -->
+            <div class="hero-profile-minimal">
+                <img id="hero-avatar" src="" alt="Minh Trường" class="hero-avatar" loading="eager">
+                <div class="hero-author-info">
+                    <span id="hero-author" class="hero-author-name"></span>
+                    <span id="hero-username" class="hero-username"></span>
                 </div>
             </div>
             
-            <div class="hero-message">
-                <h1 class="hero-title">Khám phá những món đồ<br><span class="text-gradient">đáng mua</span></h1>
-                <p class="hero-subtitle">Công nghệ &middot; Gaming &middot; Học tập &middot; Đời sống</p>
-                <button id="hero-cta" class="btn-primary hero-cta">Khám phá ngay <i class='bx bx-right-arrow-alt'></i></button>
+            <h1 class="hero-title">Khám phá những món đồ <span class="text-gradient">đáng mua</span></h1>
+            <p class="hero-subtitle">Tuyển chọn các sản phẩm công nghệ, học tập và đời sống tốt nhất.</p>
+            
+            <div id="social-container" class="social-links" aria-label="Mạng xã hội">
+                <!-- JS Render -->
             </div>
         </div>
     </header>
@@ -59,7 +55,7 @@
         <section class="filter-section" aria-label="Bộ lọc sản phẩm">
             <div class="search-box">
                 <i class='bx bx-search'></i>
-                <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm, tag..." aria-label="Tìm kiếm">
+                <input type="text" id="search-input" placeholder="Tìm sản phẩm, thương hiệu..." aria-label="Tìm kiếm">
             </div>
 
             <div class="category-wrapper">
@@ -70,11 +66,11 @@
 
             <div class="sort-box">
                 <select id="sort-select" aria-label="Sắp xếp sản phẩm">
-                    <option value="featured">🔥 Nổi bật nhất</option>
-                    <option value="price-asc">💰 Giá thấp → cao</option>
-                    <option value="price-desc">💎 Giá cao → thấp</option>
-                    <option value="rating-desc">⭐ Rating cao</option>
-                    <option value="discount-desc">🏷️ Giảm giá cao</option>
+                    <option value="featured">Nổi bật nhất</option>
+                    <option value="price-asc">Giá thấp → cao</option>
+                    <option value="price-desc">Giá cao → thấp</option>
+                    <option value="rating-desc">Rating cao</option>
+                    <option value="discount-desc">Giảm giá nhiều</option>
                 </select>
             </div>
         </section>
@@ -99,35 +95,34 @@
         <section class="trust-section">
             <div class="trust-grid">
                 <!-- About -->
-                <div class="trust-card about-card">
-                    <div class="trust-icon"><i class='bx bx-user-circle'></i></div>
+                <div class="trust-card">
+                    <div class="trust-icon"><i class='bx bx-diamond'></i></div>
                     <h3>Về MT Deals</h3>
-                    <p>Mình chọn lọc những sản phẩm hữu ích và đáng để tham khảo.</p>
+                    <p>Mục tiêu của mình là giúp bạn tiết kiệm thời gian tìm kiếm bằng cách chọn lọc những sản phẩm thực sự hữu ích và đáng tiền.</p>
                 </div>
                 
                 <!-- Trust -->
                 <div class="trust-card">
-                    <div class="trust-icon"><i class='bx bx-check-shield'></i></div>
                     <ul class="trust-list">
                         <li>
-                            <i class='bx bx-search-alt'></i>
+                            <i class='bx bx-check-shield'></i>
                             <div>
-                                <strong>🔎 Chọn lọc</strong>
-                                <span>Những sản phẩm đáng để xem qua.</span>
+                                <strong>Chọn lọc kỹ lưỡng</strong>
+                                <span>Chỉ giới thiệu những sản phẩm chất lượng.</span>
                             </div>
                         </li>
                         <li>
-                            <i class='bx bx-detail'></i>
+                            <i class='bx bx-list-ul'></i>
                             <div>
-                                <strong>📝 Rõ ràng</strong>
-                                <span>Thông tin cần thiết, dễ tham khảo.</span>
+                                <strong>Thông tin rõ ràng</strong>
+                                <span>Đánh giá trung thực, dễ tham khảo.</span>
                             </div>
                         </li>
                         <li>
                             <i class='bx bx-link-external'></i>
                             <div>
-                                <strong>🔗 Minh bạch</strong>
-                                <span>Một số liên kết có thể là affiliate.</span>
+                                <strong>Minh bạch affiliate</strong>
+                                <span>Ủng hộ mình qua link không làm tăng giá mua.</span>
                             </div>
                         </li>
                     </ul>
@@ -140,14 +135,13 @@
         <div class="footer-container">
             <div class="affiliate-disclosure">
                 <i class='bx bx-info-circle'></i>
-                <p>Một số liên kết trên MT Deals là liên kết affiliate. Mình có thể nhận hoa hồng khi bạn mua hàng qua liên kết, không làm tăng giá bạn trả.</p>
+                <p>Một số liên kết trên website là liên kết affiliate. Mình có thể nhận một khoản hoa hồng nhỏ khi bạn mua hàng qua các liên kết này, và điều đó hoàn toàn không làm tăng giá sản phẩm bạn phải trả.</p>
             </div>
             
             <div class="footer-bottom">
                 <strong>MT Deals</strong>
-                <span>Minh Trường · @minhtruong06</span>
-                <p style="margin: 8px 0; font-style: italic;">"Khám phá những món đồ đáng mua."</p>
-                <p>&copy; <span id="current-year"></span> Minh Trường. All rights reserved.</p>
+                <span style="margin: 8px 0; color: var(--text-secondary);">Minh Trường · @minhtruong06</span>
+                <p>&copy; <span id="current-year"></span> All rights reserved.</p>
             </div>
         </div>
     </footer>

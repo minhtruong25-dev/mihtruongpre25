@@ -1,5 +1,5 @@
 // ======================================================
-// ⚙️ MT DEALS — APP LOGIC (PERFORMANCE KINGS)
+// ⚙️ MT DEALS V3 — LOGIC & PERFORMANCE CORE
 // ======================================================
 
 const AppState = {
@@ -8,7 +8,7 @@ const AppState = {
     sort: 'featured'
 };
 
-// Global Observers - Chống memory leak & render lặp
+// Global Observers - Chống memory leak
 let globalRevealObserver = null;
 
 const formatCurrency = (num) => {
@@ -25,11 +25,9 @@ function initApp() {
     document.title = SITE_CONFIG.seoTitle;
     document.querySelector('meta[name="description"]')?.setAttribute("content", SITE_CONFIG.seoDescription);
 
-    setElText('nav-brand-name', SITE_CONFIG.siteName);
     setElText('hero-author', SITE_CONFIG.authorName);
     setElText('hero-username', SITE_CONFIG.username);
     setElText('hero-bio', SITE_CONFIG.bio);
-    setElText('footer-author', SITE_CONFIG.authorName);
     setElText('current-year', new Date().getFullYear());
 
     const avatarEl = document.getElementById('hero-avatar');
@@ -61,29 +59,23 @@ function initApp() {
 
 function renderCategories() {
     const container = document.getElementById('category-container');
-    if (!container) return;
-    if (typeof CATEGORIES !== 'undefined') {
-        container.innerHTML = CATEGORIES.map(c => `
-            <button class="cat-btn js-cat-btn ${c.id === AppState.category ? 'active' : ''}" data-id="${c.id}" aria-label="Lọc mục ${c.name}">${c.name}</button>
-        `).join('');
-    }
+    if (!container || typeof CATEGORIES === 'undefined') return;
+    container.innerHTML = CATEGORIES.map(c => `
+        <button class="cat-btn js-cat-btn ${c.id === AppState.category ? 'active' : ''}" data-id="${c.id}" aria-label="Lọc ${c.name}">${c.name}</button>
+    `).join('');
 }
 
 function renderProducts() {
     const grid = document.getElementById('product-container');
     const featuredContainer = document.getElementById('featured-container');
     const emptyState = document.getElementById('empty-state');
-    if (!grid || !featuredContainer || !emptyState) return;
+    if (!grid || !featuredContainer || !emptyState || typeof PRODUCTS === 'undefined') return;
 
-    // Ngắt theo dõi các thẻ cũ trước khi xóa DOM để chống leak
-    if (globalRevealObserver) {
-        globalRevealObserver.disconnect();
-    }
+    // Ngắt theo dõi các thẻ cũ trước khi xóa DOM
+    if (globalRevealObserver) globalRevealObserver.disconnect();
 
     const term = AppState.searchQuery.toLowerCase();
     
-    if (typeof PRODUCTS === 'undefined') return;
-
     let filtered = PRODUCTS.filter(p => {
         const matchCat = AppState.category === 'all' || p.category === AppState.category;
         const matchSearch = p.name.toLowerCase().includes(term) || 
@@ -113,11 +105,9 @@ function renderProducts() {
 
     featuredContainer.innerHTML = featuredProduct ? generateCardHTML(featuredProduct, true) : '';
     
-    // Batch DOM Update qua rAF
+    // Batch DOM Update qua rAF để tối ưu reflow
     window.requestAnimationFrame(() => {
         grid.innerHTML = normalProducts.map(p => generateCardHTML(p, false)).join('');
-        
-        // Gọi scroll animation sau khi DOM đã vẽ
         window.requestAnimationFrame(() => {
             initScrollAnimations();
         });
@@ -129,13 +119,10 @@ function generateCardHTML(p, isFeatured) {
     const discountStr = p.discount ? `<div class="card-discount">-${p.discount}%</div>` : '';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
-    // Fallback ảnh trống khi lỗi để tránh reflow layout
     const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/111111/52525b?text=No+Image'`;
-    const labelFeatured = isFeatured ? `<div class="featured-label"><i class='bx bxs-flame'></i> DEAL NỔI BẬT</div>` : '';
-    
-    const descHTML = p.description ? `<p class="card-desc ${isFeatured ? '' : 'desktop-only'}">${p.description}</p>` : '';
+    const labelFeatured = isFeatured ? `<div class="featured-label"><i class='bx bxs-flame'></i> Nổi bật nhất</div>` : '';
+    const descHTML = p.description ? `<p class="card-desc">${p.description}</p>` : '';
 
-    // Tối ưu ảnh: loading="lazy" và decoding="async" giúp load ảnh ko chặn scroll
     return `
         <article class="product-card js-product-card card-reveal ${isFeatured ? 'featured-card' : ''}" data-id="${p.id}" tabindex="0">
             <div class="card-img-wrap">
@@ -148,13 +135,13 @@ function generateCardHTML(p, isFeatured) {
                 <h3 class="card-title">${p.name}</h3>
                 ${descHTML}
                 <div class="card-rating">
-                    <i class='bx bxs-star'></i> <span>${p.rating || 0}</span> <span style="color:var(--text-muted)">(${p.reviews || 0})</span>
+                    <i class='bx bxs-star'></i> <span>${p.rating || 0}</span>
                 </div>
                 <div class="card-price-wrap">
                     <span class="card-price">${price}</span>
                     <div class="price-old-wrap">${oldPrice}</div>
                 </div>
-                <button class="card-cta">Xem Deal <i class='bx bx-right-arrow-alt'></i></button>
+                <button class="card-cta">Xem deal <i class='bx bx-right-arrow-alt'></i></button>
             </div>
         </article>
     `;
@@ -168,7 +155,7 @@ function openModal(id) {
     const body = document.getElementById('modal-body');
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
-    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--danger); font-weight:800; padding:2px 8px; background:rgba(239,68,68,0.15); border-radius:6px;">-${p.discount}%</span>` : '';
+    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--accent); font-weight:800; padding:2px 8px; background:var(--accent-bg); border-radius:6px;">-${p.discount}%</span>` : '';
 
     body.innerHTML = `
         <div class="modal-grid">
@@ -183,8 +170,8 @@ function openModal(id) {
                     <div style="display:flex; gap:12px; align-items:center;">${oldPrice} ${discount}</div>
                 </div>
                 <p class="modal-desc">${p.description}</p>
-                <button class="btn-primary modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl}" data-id="${p.id}">
-                    Xem trên Shopee <i class='bx bx-link-external'></i>
+                <button class="modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl}" data-id="${p.id}">
+                    Đến nơi bán <i class='bx bx-link-external'></i>
                 </button>
             </div>
         </div>
@@ -201,14 +188,9 @@ function closeModal() {
 
 function handleAffiliateClick(link, id) {
     if (!SITE_CONFIG.affiliateEnabled || !link || link.trim() === "") {
-        alert("Link mua hàng chưa được cập nhật. Bạn vui lòng quay lại sau nhé!");
+        alert("Link mua hàng chưa được cập nhật.");
         return;
     }
-    try {
-        let clicks = JSON.parse(localStorage.getItem('mt_clicks') || '{}');
-        clicks[id] = (clicks[id] || 0) + 1;
-        localStorage.setItem('mt_clicks', JSON.stringify(clicks));
-    } catch(e) {}
     window.open(link, '_blank', 'noopener,noreferrer,nofollow,sponsored');
 }
 
@@ -219,16 +201,12 @@ function setupEventListeners() {
         searchTimeout = setTimeout(() => {
             AppState.searchQuery = e.target.value;
             renderProducts();
-        }, 300);
+        }, 250);
     });
 
     document.getElementById('sort-select')?.addEventListener('change', (e) => {
         AppState.sort = e.target.value;
         renderProducts();
-    });
-
-    document.getElementById('hero-cta')?.addEventListener('click', () => {
-        document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
     });
 
     document.body.addEventListener('click', (e) => {
@@ -282,33 +260,23 @@ function initTheme() {
     });
 }
 
-// BTT - Tối ưu Scroll: Dùng Observer theo dõi Hero Section, KHÔNG scroll event listener
 function setupBackToTopObserver() {
     const btt = document.getElementById('back-to-top');
     const heroSection = document.querySelector('.hero-section');
-    
     if (btt && heroSection) {
         const bttObserver = new IntersectionObserver((entries) => {
             window.requestAnimationFrame(() => {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) {
-                        btt.classList.remove('hidden');
-                    } else {
-                        btt.classList.add('hidden');
-                    }
-                });
+                btt.classList.toggle('hidden', entries[0].isIntersecting);
             });
         }, { rootMargin: '0px', threshold: 0 });
         
         bttObserver.observe(heroSection);
-        btt.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
 }
 
 // =====================================================
-// SCROLL REVEAL (TỐI ƯU CỰC NHẸ CHO ĐIỆN THOẠI)
+// SCROLL REVEAL (NO LAG, PRE-LOAD)
 // =====================================================
 function initScrollAnimations() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -318,19 +286,16 @@ function initScrollAnimations() {
 
     if (!globalRevealObserver) {
         globalRevealObserver = new IntersectionObserver((entries, obs) => {
-            // Gom nhóm ghi DOM vào rAF để tránh reflow
             window.requestAnimationFrame(() => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        // Gỡ Observer ngay lập tức để tiết kiệm Memory
                         obs.unobserve(entry.target); 
                     }
                 });
             });
         }, { 
-            // Cốt lõi tránh khựng: Tải trước 800px. Khi ngón tay vuốt đến, thẻ ĐÃ RENDER xong
-            rootMargin: '800px 0px 800px 0px', 
+            rootMargin: '600px 0px 600px 0px', 
             threshold: 0 
         });
     }
@@ -340,9 +305,7 @@ function initScrollAnimations() {
         globalRevealObserver.observe(sec);
     });
 
-    const newCards = document.querySelectorAll('.js-product-card:not(.is-visible)');
-    newCards.forEach((card) => {
-        // KHÔNG dùng JS Transition-Delay hay setTimeout gây Block Scroll
+    document.querySelectorAll('.js-product-card:not(.is-visible)').forEach((card) => {
         globalRevealObserver.observe(card);
     });
 }
