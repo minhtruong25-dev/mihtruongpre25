@@ -1,5 +1,5 @@
 // ======================================================
-// ⚙️ MT DEALS — APP LOGIC (SCROLL & MICRO-INTERACTION OPTIMIZED)
+// ⚙️ MT DEALS — NATIVE SCROLL & MICRO-INTERACTIONS V2.1
 // ======================================================
 
 const AppState = {
@@ -36,7 +36,7 @@ function initApp() {
     if (avatarEl && SITE_CONFIG.avatar) {
         avatarEl.src = SITE_CONFIG.avatar;
         avatarEl.onerror = () => {
-            avatarEl.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2327272a'/%3E%3Cpath d='M50 55c-11 0-20-9-20-20s9-20 20-20 20 9 20 20-9 20-20 20zm0 5c15 0 30 7.5 30 22.5V90H20v-7.5C20 67.5 35 60 50 60z' fill='%23a1a1aa'/%3E%3C/svg%3E";
+            avatarEl.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111'/%3E%3Cpath d='M50 55c-11 0-20-9-20-20s9-20 20-20 20 9 20 20-9 20-20 20zm0 5c15 0 30 7.5 30 22.5V90H20v-7.5C20 67.5 35 60 50 60z' fill='%2352525b'/%3E%3C/svg%3E";
         };
     }
 
@@ -113,7 +113,7 @@ function renderProducts() {
 
     featuredContainer.innerHTML = featuredProduct ? generateCardHTML(featuredProduct, true) : '';
     
-    // Batch DOM Update qua rAF
+    // Batch DOM Update qua rAF để tối ưu reflow
     window.requestAnimationFrame(() => {
         grid.innerHTML = normalProducts.map(p => generateCardHTML(p, false)).join('');
         
@@ -126,33 +126,35 @@ function renderProducts() {
 
 function generateCardHTML(p, isFeatured) {
     const badgeStr = p.badge ? `<span class="card-badge ${p.badge.includes('HOT') ? 'hot' : ''}">${p.badge}</span>` : '';
+    const discountStr = p.discount ? `<div class="card-discount">-${p.discount}%</div>` : '';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
-    // Fallback ảnh trống khi lỗi để tránh reflow layout
-    const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/27272a/a1a1aa?text=No+Image'`;
-    const labelFeatured = isFeatured ? `<div class="featured-label"><i class='bx bxs-flame'></i> SẢN PHẨM NỔI BẬT</div>` : '';
     
-    const descHTML = p.description ? `<p class="card-desc ${isFeatured ? '' : 'desktop-only'}">${p.description}</p>` : '';
+    // Fallback ảnh trống khi lỗi để tránh reflow layout
+    const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/111111/52525b?text=No+Image'`;
+    const labelFeatured = isFeatured ? `<div class="featured-label"><i class='bx bxs-flame'></i> DEAL NỔI BẬT</div>` : '';
+    const descHTML = p.description ? `<p class="card-desc">${p.description}</p>` : '';
 
     // Tối ưu ảnh: loading="lazy" và decoding="async" giúp load ảnh ko chặn scroll
     return `
         <article class="product-card js-product-card card-reveal ${isFeatured ? 'featured-card' : ''}" data-id="${p.id}" tabindex="0">
             <div class="card-img-wrap">
-                ${badgeStr}
+                <div class="card-badges">${badgeStr}</div>
                 <img src="${p.image}" alt="${p.name}" class="card-img" loading="lazy" decoding="async" onerror="${fallback}">
+                ${discountStr}
             </div>
             <div class="card-info">
                 ${labelFeatured}
                 <h3 class="card-title">${p.name}</h3>
                 ${descHTML}
                 <div class="card-rating">
-                    <i class='bx bxs-star'></i> <span>${p.rating || 0} (${p.reviews || 0})</span>
+                    <i class='bx bxs-star'></i> <span>${p.rating || 0}</span> <span style="color:var(--text-muted)">(${p.reviews || 0})</span>
                 </div>
                 <div class="card-price-wrap">
                     <span class="card-price">${price}</span>
                     <div class="price-old-wrap">${oldPrice}</div>
                 </div>
-                <button class="card-cta">Xem chi tiết <i class='bx bx-right-arrow-alt'></i></button>
+                <button class="card-cta">Xem Deal <i class='bx bx-right-arrow-alt'></i></button>
             </div>
         </article>
     `;
@@ -166,7 +168,7 @@ function openModal(id) {
     const body = document.getElementById('modal-body');
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
-    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--danger); font-weight:700; padding:2px 6px; background:rgba(239,68,68,0.1); border-radius:4px; border: 1px solid rgba(239,68,68,0.2);">-${p.discount}%</span>` : '';
+    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--danger); font-weight:800; padding:2px 8px; background:rgba(239,68,68,0.15); border-radius:6px;">-${p.discount}%</span>` : '';
 
     body.innerHTML = `
         <div class="modal-grid">
@@ -177,11 +179,11 @@ function openModal(id) {
                     <i class='bx bxs-star'></i> <span>${p.rating || 0} (${p.reviews || 0} đánh giá)</span>
                 </div>
                 <div class="card-price-wrap" style="margin-bottom: 24px;">
-                    <span class="card-price" style="font-size: 1.5rem;">${price}</span>
-                    <div style="display:flex; gap:8px; align-items:center;">${oldPrice} ${discount}</div>
+                    <span class="card-price" style="font-size: 1.6rem;">${price}</span>
+                    <div style="display:flex; gap:12px; align-items:center;">${oldPrice} ${discount}</div>
                 </div>
                 <p class="modal-desc">${p.description}</p>
-                <button class="btn-primary modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl}" data-id="${p.id}">
+                <button class="modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl}" data-id="${p.id}">
                     Xem trên Shopee <i class='bx bx-link-external'></i>
                 </button>
             </div>
@@ -280,19 +282,21 @@ function initTheme() {
     });
 }
 
-// BTT - Tối ưu Scroll: Dùng Observer để theo dõi Hero Section thay vì sự kiện Scroll liên tục
+// BTT - Tối ưu Scroll: Dùng Observer theo dõi Hero Section, KHÔNG scroll event listener
 function setupBackToTopObserver() {
     const btt = document.getElementById('back-to-top');
     const heroSection = document.querySelector('.hero-section');
     
     if (btt && heroSection) {
         const bttObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) {
-                    btt.classList.remove('hidden');
-                } else {
-                    btt.classList.add('hidden');
-                }
+            window.requestAnimationFrame(() => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        btt.classList.remove('hidden');
+                    } else {
+                        btt.classList.add('hidden');
+                    }
+                });
             });
         }, { rootMargin: '0px', threshold: 0 });
         
@@ -314,17 +318,19 @@ function initScrollAnimations() {
 
     if (!globalRevealObserver) {
         globalRevealObserver = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    // Gỡ Observer ngay lập tức để tiết kiệm Memory
-                    obs.unobserve(entry.target); 
-                }
+            // Gom nhóm ghi DOM vào rAF để tránh reflow
+            window.requestAnimationFrame(() => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        // Gỡ Observer ngay lập tức để tiết kiệm Memory
+                        obs.unobserve(entry.target); 
+                    }
+                });
             });
         }, { 
-            // Cốt lõi tránh khựng: Kích hoạt thẻ từ khoảng cách rất xa (1000px)
-            // Khi người dùng vuốt đến, thẻ đã render xong, hoàn toàn không bị delay.
-            rootMargin: '1000px 0px 1000px 0px', 
+            // Cốt lõi tránh khựng: Tải trước 800px. Khi ngón tay vuốt đến, thẻ ĐÃ RENDER xong
+            rootMargin: '800px 0px 800px 0px', 
             threshold: 0 
         });
     }
