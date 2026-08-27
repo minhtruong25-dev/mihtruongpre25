@@ -13,7 +13,7 @@ const SITE_CONFIG = {
     bio: "Sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống.",
     
     // ✏️ AVATAR (Dán link ảnh thật của bạn vào đây)
-    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
+    avatar: "https://cdn.phototourl.com/free/2026-08-27-2c4b4e5e-73f2-482a-8383-8f33b5a1fb43.jpg",
 
     // ✏️ CONTACT & SOCIAL (Để rỗng "" nếu không có, icon sẽ tự ẩn)
     email: "truonghehe144@gmail.com",
