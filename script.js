@@ -1,5 +1,5 @@
 // ======================================================
-// ⚙️ MT DEALS — APP LOGIC (DO NOT EDIT)
+// ⚙️ MT DEALS — APP LOGIC (ĐÃ HOÀN THIỆN)
 // Xử lý Render, Search, Filter, Sort, Modal và Tracking
 // ======================================================
 
@@ -113,6 +113,9 @@ function renderProducts() {
 
     featuredContainer.innerHTML = featuredProduct ? generateCardHTML(featuredProduct, true) : '';
     grid.innerHTML = normalProducts.map(p => generateCardHTML(p, false)).join('');
+
+    // 5. GỌI HIỆU ỨNG LƯỚT LÊN KHI RENDER XONG
+    initScrollAnimations();
 }
 
 // --- HTML GENERATOR ---
@@ -123,7 +126,6 @@ function generateCardHTML(p, isFeatured) {
     const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/27272a/a1a1aa?text=No+Image'`;
     const labelFeatured = isFeatured ? `<div class="featured-label"><i class='bx bxs-flame'></i> SẢN PHẨM NỔI BẬT</div>` : '';
     
-    // Tên mô tả ngắn cho card thường (2 dòng)
     const descHTML = p.description ? `<p class="card-desc ${isFeatured ? '' : 'desktop-only'}">${p.description}</p>` : '';
 
     return `
@@ -157,7 +159,7 @@ function openModal(id) {
     const body = document.getElementById('modal-body');
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
-    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--danger); font-weight:600; padding:2px 6px; background:rgba(239,68,68,0.1); border-radius:4px;">-${p.discount}%</span>` : '';
+    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--danger); font-weight:700; padding:2px 6px; background:rgba(239,68,68,0.1); border-radius:4px; border: 1px solid rgba(239,68,68,0.2);">-${p.discount}%</span>` : '';
 
     body.innerHTML = `
         <div class="modal-grid">
@@ -182,10 +184,8 @@ function openModal(id) {
     const modal = document.getElementById('product-modal');
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-    
-    // ĐÃ XÓA LỆNH FOCUS() ĐỂ ĐIỆN THOẠI KHÔNG BỊ TỰ ĐỘNG PHÓNG TO
+    // Tính năng .focus() đã được loại bỏ để tránh iOS/Android tự động zoom lệch trang
 }
-
 
 function closeModal() {
     document.getElementById('product-modal').classList.add('hidden');
@@ -197,7 +197,7 @@ function handleAffiliateClick(link, id) {
         alert("Link mua hàng chưa được cập nhật. Bạn vui lòng quay lại sau nhé!");
         return;
     }
-    // Local Tracking
+    // Track click locally
     try {
         let clicks = JSON.parse(localStorage.getItem('mt_clicks') || '{}');
         clicks[id] = (clicks[id] || 0) + 1;
@@ -230,7 +230,7 @@ function setupEventListeners() {
         document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
     });
 
-    // Global Event Delegation (Tất cả click gom về đây)
+    // Global Event Delegation
     document.body.addEventListener('click', (e) => {
         // 1. Click Category
         const catBtn = e.target.closest('.js-cat-btn');
@@ -257,20 +257,20 @@ function setupEventListeners() {
             return;
         }
 
-        // 4. Đóng Modal (Nút X hoặc click ra ngoài)
+        // 4. Đóng Modal
         if (e.target.closest('#close-modal') || e.target.id === 'product-modal' || e.target.classList.contains('modal-overlay')) {
             closeModal();
         }
     });
 
-    // 5. ESC để đóng modal
+    // Bấm ESC để đóng modal
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !document.getElementById('product-modal').classList.contains('hidden')) {
             closeModal();
         }
     });
 
-    // 6. Back to Top
+    // Back to top
     const btt = document.getElementById('back-to-top');
     if (btt) {
         window.addEventListener('scroll', () => {
@@ -299,6 +299,31 @@ function initTheme() {
     });
 }
 
-// KHỞI CHẠY DUY NHẤT 1 LẦN
+// =====================================================
+// SCROLL ANIMATIONS (Intersection Observer)
+// =====================================================
+function initScrollAnimations() {
+    // Tắt animation nếu user đang bật chế độ giảm hiệu ứng chuyển động trên HĐH
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const cards = document.querySelectorAll('.js-product-card');
+    cards.forEach(card => {
+        if (!card.classList.contains('card-reveal')) {
+            card.classList.add('card-reveal');
+        }
+    });
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target); 
+            }
+        });
+    }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+
+    cards.forEach(card => observer.observe(card));
+}
+
+// KHỞI CHẠY DUY NHẤT 1 LẦN KHI LOAD TRANG
 document.addEventListener('DOMContentLoaded', initApp);
-        
