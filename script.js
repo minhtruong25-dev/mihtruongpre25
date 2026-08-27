@@ -1,5 +1,5 @@
 // ======================================================
-// ⚙️ MT DEALS — APP LOGIC
+// ⚙️ MT DEALS — APP LOGIC (SMOOTH & NATIVE V3)
 // ======================================================
 
 const AppState = {
@@ -7,6 +7,10 @@ const AppState = {
     category: 'all',
     sort: 'featured'
 };
+
+// Global Observers (Chỉ khởi tạo 1 lần để tránh leak bộ nhớ)
+let globalCardObserver = null;
+let globalSectionObserver = null;
 
 const formatCurrency = (num) => {
     if (!num) return '';
@@ -58,9 +62,12 @@ function initApp() {
 function renderCategories() {
     const container = document.getElementById('category-container');
     if (!container) return;
-    container.innerHTML = CATEGORIES.map(c => `
-        <button class="cat-btn js-cat-btn ${c.id === AppState.category ? 'active' : ''}" data-id="${c.id}" aria-label="Lọc mục ${c.name}">${c.name}</button>
-    `).join('');
+    // Categories should be defined in data/categories.js
+    if (typeof CATEGORIES !== 'undefined') {
+        container.innerHTML = CATEGORIES.map(c => `
+            <button class="cat-btn js-cat-btn ${c.id === AppState.category ? 'active' : ''}" data-id="${c.id}" aria-label="Lọc mục ${c.name}">${c.name}</button>
+        `).join('');
+    }
 }
 
 function renderProducts() {
@@ -69,7 +76,13 @@ function renderProducts() {
     const emptyState = document.getElementById('empty-state');
     if (!grid || !featuredContainer || !emptyState) return;
 
+    if (globalCardObserver) {
+        globalCardObserver.disconnect();
+    }
+
     const term = AppState.searchQuery.toLowerCase();
+    
+    if (typeof PRODUCTS === 'undefined') return;
 
     let filtered = PRODUCTS.filter(p => {
         const matchCat = AppState.category === 'all' || p.category === AppState.category;
@@ -82,8 +95,8 @@ function renderProducts() {
     filtered.sort((a, b) => {
         if (AppState.sort === 'price-asc') return a.price - b.price;
         if (AppState.sort === 'price-desc') return b.price - a.price;
-        if (AppState.sort === 'discount-desc') return b.discount - a.discount;
-        if (AppState.sort === 'rating-desc') return b.rating - a.rating;
+        if (AppState.sort === 'discount-desc') return (b.discount || 0) - (a.discount || 0);
+        if (AppState.sort === 'rating-desc') return (b.rating || 0) - (a.rating || 0);
         return 0; 
     });
 
@@ -101,8 +114,9 @@ function renderProducts() {
     featuredContainer.innerHTML = featuredProduct ? generateCardHTML(featuredProduct, true) : '';
     grid.innerHTML = normalProducts.map(p => generateCardHTML(p, false)).join('');
 
-    // Khởi chạy Animation Reveal với Dynamic Elements
-    initScrollAnimations();
+    requestAnimationFrame(() => {
+        initScrollAnimations();
+    });
 }
 
 function generateCardHTML(p, isFeatured) {
@@ -115,7 +129,7 @@ function generateCardHTML(p, isFeatured) {
     const descHTML = p.description ? `<p class="card-desc ${isFeatured ? '' : 'desktop-only'}">${p.description}</p>` : '';
 
     return `
-        <article class="product-card js-product-card ${isFeatured ? 'featured-card' : ''}" data-id="${p.id}" tabindex="0">
+        <article class="product-card js-product-card card-reveal ${isFeatured ? 'featured-card' : ''}" data-id="${p.id}" tabindex="0">
             <div class="card-img-wrap">
                 ${badgeStr}
                 <img src="${p.image}" alt="${p.name}" class="card-img" loading="lazy" onerror="${fallback}">
@@ -125,7 +139,7 @@ function generateCardHTML(p, isFeatured) {
                 <h3 class="card-title">${p.name}</h3>
                 ${descHTML}
                 <div class="card-rating">
-                    <i class='bx bxs-star'></i> <span>${p.rating} (${p.reviews})</span>
+                    <i class='bx bxs-star'></i> <span>${p.rating || 0} (${p.reviews || 0})</span>
                 </div>
                 <div class="card-price-wrap">
                     <span class="card-price">${price}</span>
@@ -138,6 +152,7 @@ function generateCardHTML(p, isFeatured) {
 }
 
 function openModal(id) {
+    if (typeof PRODUCTS === 'undefined') return;
     const p = PRODUCTS.find(x => x.id === id);
     if (!p) return;
 
@@ -152,7 +167,7 @@ function openModal(id) {
             <div class="modal-info">
                 <h2 class="modal-title">${p.name}</h2>
                 <div class="card-rating" style="margin-bottom: 16px;">
-                    <i class='bx bxs-star'></i> <span>${p.rating} (${p.reviews} đánh giá)</span>
+                    <i class='bx bxs-star'></i> <span>${p.rating || 0} (${p.reviews || 0} đánh giá)</span>
                 </div>
                 <div class="card-price-wrap" style="margin-bottom: 24px;">
                     <span class="card-price" style="font-size: 1.5rem;">${price}</span>
@@ -267,7 +282,7 @@ function initTheme() {
 }
 
 // =====================================================
-// SCROLL REVEAL ANIMATIONS (INTERSECTION OBSERVER)
+// SCROLL REVEAL (NATIVE, CỰC NHẸ, KHÔNG LAG)
 // =====================================================
 function initScrollAnimations() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -275,43 +290,46 @@ function initScrollAnimations() {
         return;
     }
 
-    // 1. Observer cho Sections (Trust, Footer, etc.)
-    const sectionObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                obs.unobserve(entry.target);
-            }
-        });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.15 });
+    if (!globalCardObserver) {
+        globalCardObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    
+                    setTimeout(() => {
+                        if (entry.target) {
+                            entry.target.style.transitionDelay = '0ms';
+                            entry.target.style.willChange = 'auto'; 
+                        }
+                    }, 550);
+                    
+                    obs.unobserve(entry.target); 
+                }
+            });
+        }, { rootMargin: '0px 0px -5% 0px', threshold: 0.05 });
+    }
+
+    if (!globalSectionObserver) {
+        globalSectionObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '0px 0px -5% 0px', threshold: 0.1 });
+    }
 
     document.querySelectorAll('.trust-section:not(.is-visible), .footer:not(.is-visible)').forEach(sec => {
         sec.classList.add('reveal-section');
-        sectionObserver.observe(sec);
+        globalSectionObserver.observe(sec);
     });
 
-    // 2. Observer cho Product Cards (với Stagger Delay)
-    const cardObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                // Gỡ transition-delay sau khi animation hoàn tất để hover không bị lag
-                setTimeout(() => {
-                    if(entry.target) entry.target.style.transitionDelay = '0ms';
-                }, 900);
-                obs.unobserve(entry.target);
-            }
-        });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.10 });
-
-    // Áp dụng Delay nối tiếp (0, 70, 140...) cho các Card mới được render
-    const newCards = document.querySelectorAll('.js-product-card:not(.card-reveal)');
+    const newCards = document.querySelectorAll('.js-product-card:not(.is-visible)');
     newCards.forEach((card, index) => {
-        card.classList.add('card-reveal');
-        // Giới hạn delay tối đa để người dùng lướt nhanh không phải đợi
-        const delay = Math.min((index % 20) * 70, 700); 
+        const delay = Math.min((index % 4) * 30, 90); 
         card.style.transitionDelay = `${delay}ms`;
-        cardObserver.observe(card);
+        globalCardObserver.observe(card);
     });
 }
 
