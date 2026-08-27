@@ -1,5 +1,5 @@
 // ======================================================
-// ⚙️ MT DEALS V3 — LOGIC & PERFORMANCE CORE
+// ⚙️ MT DEALS V3.1 — NATIVE SCROLL LOGIC
 // ======================================================
 
 const AppState = {
@@ -8,7 +8,7 @@ const AppState = {
     sort: 'featured'
 };
 
-// Global Observers
+// Khai báo duy nhất 1 Observer để không rác bộ nhớ
 let globalRevealObserver = null;
 
 const formatCurrency = (num) => {
@@ -59,22 +59,29 @@ function initApp() {
 
 function renderCategories() {
     const container = document.getElementById('category-container');
-    if (!container || typeof CATEGORIES === 'undefined') return;
-    container.innerHTML = CATEGORIES.map(c => `
-        <button class="cat-btn js-cat-btn ${c.id === AppState.category ? 'active' : ''}" data-id="${c.id}" aria-label="Lọc ${c.name}">${c.name}</button>
-    `).join('');
+    if (!container) return;
+    if (typeof CATEGORIES !== 'undefined') {
+        container.innerHTML = CATEGORIES.map(c => `
+            <button class="cat-btn js-cat-btn ${c.id === AppState.category ? 'active' : ''}" data-id="${c.id}" aria-label="Lọc mục ${c.name}">${c.name}</button>
+        `).join('');
+    }
 }
 
 function renderProducts() {
     const grid = document.getElementById('product-container');
     const featuredContainer = document.getElementById('featured-container');
     const emptyState = document.getElementById('empty-state');
-    if (!grid || !featuredContainer || !emptyState || typeof PRODUCTS === 'undefined') return;
+    if (!grid || !featuredContainer || !emptyState) return;
 
-    if (globalRevealObserver) globalRevealObserver.disconnect();
+    // Ngắt theo dõi các thẻ cũ trước khi xóa khỏi DOM
+    if (globalRevealObserver) {
+        globalRevealObserver.disconnect();
+    }
 
     const term = AppState.searchQuery.toLowerCase();
     
+    if (typeof PRODUCTS === 'undefined') return;
+
     let filtered = PRODUCTS.filter(p => {
         const matchCat = AppState.category === 'all' || p.category === AppState.category;
         const matchSearch = p.name.toLowerCase().includes(term) || 
@@ -104,6 +111,7 @@ function renderProducts() {
 
     featuredContainer.innerHTML = featuredProduct ? generateCardHTML(featuredProduct, true) : '';
     
+    // Gộp quá trình render DOM vào RequestAnimationFrame để không bị khựng
     window.requestAnimationFrame(() => {
         grid.innerHTML = normalProducts.map(p => generateCardHTML(p, false)).join('');
         window.requestAnimationFrame(() => {
@@ -117,12 +125,13 @@ function generateCardHTML(p, isFeatured) {
     const discountStr = p.discount ? `<div class="card-discount">-${p.discount}%</div>` : '';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
-    const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/111111/52525b?text=No+Image'`;
     
-    // Featured layout vs Normal layout
-    const labelFeatured = isFeatured ? `<div class="featured-label">FEATURED DEAL</div>` : '';
+    // Fallback ảnh trống khi lỗi
+    const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/1a1a1e/52525b?text=No+Image'`;
+    const labelFeatured = isFeatured ? `<div class="featured-label">DEAL NỔI BẬT</div>` : '';
     const descHTML = p.description ? `<p class="card-desc ${isFeatured ? '' : 'desktop-only'}">${p.description}</p>` : '';
 
+    // loading="lazy" và decoding="async" giúp load ảnh ko chặn scroll
     return `
         <article class="product-card js-product-card card-reveal ${isFeatured ? 'featured-card' : ''}" data-id="${p.id}" tabindex="0">
             <div class="card-img-wrap">
@@ -135,13 +144,13 @@ function generateCardHTML(p, isFeatured) {
                 <h3 class="card-title">${p.name}</h3>
                 ${descHTML}
                 <div class="card-rating">
-                    <i class='bx bxs-star'></i> <span>${p.rating || 0}</span>
+                    <i class='bx bxs-star'></i> <span>${p.rating || 0}</span> <span style="color:var(--text-muted)">(${p.reviews || 0})</span>
                 </div>
                 <div class="card-price-wrap">
                     <span class="card-price">${price}</span>
                     <div class="price-old-wrap">${oldPrice}</div>
                 </div>
-                <button class="card-cta">Xem deal <i class='bx bx-right-arrow-alt'></i></button>
+                <button class="card-cta">Xem Deal <i class='bx bx-right-arrow-alt'></i></button>
             </div>
         </article>
     `;
@@ -155,7 +164,7 @@ function openModal(id) {
     const body = document.getElementById('modal-body');
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
-    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--accent); font-weight:700; padding:4px 8px; background:var(--accent-bg); border-radius:6px;">-${p.discount}%</span>` : '';
+    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--accent); font-weight:800; padding:2px 8px; background:var(--accent-bg); border-radius:6px;">-${p.discount}%</span>` : '';
 
     body.innerHTML = `
         <div class="modal-grid">
@@ -260,23 +269,33 @@ function initTheme() {
     });
 }
 
+// BTT - Tối ưu Scroll: Dùng Observer theo dõi Hero Section, KHÔNG scroll event listener
 function setupBackToTopObserver() {
     const btt = document.getElementById('back-to-top');
     const heroSection = document.querySelector('.hero-section');
+    
     if (btt && heroSection) {
         const bttObserver = new IntersectionObserver((entries) => {
             window.requestAnimationFrame(() => {
-                btt.classList.toggle('hidden', entries[0].isIntersecting);
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        btt.classList.remove('hidden');
+                    } else {
+                        btt.classList.add('hidden');
+                    }
+                });
             });
         }, { rootMargin: '0px', threshold: 0 });
         
         bttObserver.observe(heroSection);
-        btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        btt.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     }
 }
 
 // =====================================================
-// SCROLL REVEAL (NO LAG, NATIVE SCROLL)
+// SCROLL REVEAL (LOẠI BỎ LAG - TẢI TRƯỚC VIEWPORT)
 // =====================================================
 function initScrollAnimations() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -295,7 +314,7 @@ function initScrollAnimations() {
                 });
             });
         }, { 
-            // Tải trước 600px để mobile scroll không bị chờ
+            // Nạp trước 600px để mobile scroll không bị chờ
             rootMargin: '600px 0px 600px 0px', 
             threshold: 0 
         });
