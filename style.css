@@ -151,38 +151,159 @@ img { max-width: 100%; display: block; }
 .btn-primary:active { transform: translateY(0); }
 
 /* =====================================================
-   FILTER & SEARCH
+   FILTER & SEARCH (MOBILE FIRST)
    ===================================================== */
-.filter-section { margin-bottom: 40px; display: flex; flex-direction: column; gap: 16px; }
-.search-box { position: relative; width: 100%; }
-.search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem;}
+.filter-section { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px; 
+    margin-bottom: 40px; 
+    width: 100%;
+}
+
+/* 1. KHU VỰC TÌM KIẾM */
+.search-box { 
+    position: relative; 
+    width: 100%; 
+}
+.search-box i { 
+    position: absolute; 
+    left: 16px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    color: var(--text-muted); 
+    font-size: 1.25rem;
+}
 .search-box input {
-    width: 100%; background: var(--bg-surface); border: 1px solid var(--border);
-    padding: 14px 16px 14px 48px; border-radius: var(--radius-full); color: var(--text-primary); font-size: 0.95rem; transition: var(--transition);
+    width: 100%; 
+    background: var(--bg-surface); 
+    border: 1px solid var(--border);
+    padding: 14px 16px 14px 48px; 
+    border-radius: var(--radius-full); 
+    color: var(--text-primary); 
+    font-size: 0.95rem; 
+    transition: var(--transition);
 }
-.search-box input:focus { border-color: var(--border-hover); background: var(--bg-base); }
+.search-box input:focus { 
+    border-color: var(--border-hover); 
+    background: var(--bg-base); 
+    outline: none;
+}
 
-.category-wrapper { overflow: hidden; margin: 0 -16px; padding: 0 16px; }
-.category-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
-.category-scroll::-webkit-scrollbar { display: none; }
+/* 2. KHU VỰC DANH MỤC */
+.category-wrapper { 
+    width: 100%; 
+    overflow: hidden; 
+}
+.category-scroll { 
+    display: flex; 
+    gap: 8px; 
+    overflow-x: auto; 
+    padding-bottom: 8px; 
+    scrollbar-width: none; /* Ẩn scrollbar Firefox */
+    -ms-overflow-style: none; /* Ẩn scrollbar IE/Edge */
+    flex-wrap: nowrap; /* Chống rớt dòng */
+    -webkit-overflow-scrolling: touch; /* Lướt mượt trên iOS */
+}
+.category-scroll::-webkit-scrollbar { 
+    display: none; /* Ẩn scrollbar Chrome/Safari */
+}
 .cat-btn {
-    padding: 10px 20px; background: var(--bg-surface); border: 1px solid var(--border);
-    border-radius: var(--radius-full); color: var(--text-secondary); font-weight: 500; font-size: 0.9rem; white-space: nowrap; cursor: pointer; transition: var(--transition);
+    padding: 10px 20px; 
+    background: var(--bg-surface); 
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full); 
+    color: var(--text-secondary); 
+    font-weight: 500; 
+    font-size: 0.9rem; 
+    white-space: nowrap; /* Không rớt chữ trong nút */
+    flex-shrink: 0; /* BẮT BUỘC: Chống co móp nút khi hết chỗ */
+    cursor: pointer; 
+    transition: var(--transition);
 }
-.cat-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
-.cat-btn.active { background: var(--text-primary); color: var(--bg-base); border-color: var(--text-primary); }
+.cat-btn:hover { 
+    border-color: var(--border-hover); 
+    color: var(--text-primary); 
+}
+.cat-btn.active { 
+    background: var(--text-primary); 
+    color: var(--bg-base); 
+    border-color: var(--text-primary); 
+}
 
+/* 3. KHU VỰC SẮP XẾP */
+.sort-box {
+    width: 100%;
+}
 .sort-box select {
-    width: 100%; background: var(--bg-surface); color: var(--text-primary);
-    border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-md); font-weight: 500; cursor: pointer;
+    width: 100%; 
+    background: var(--bg-surface); 
+    color: var(--text-primary);
+    border: 1px solid var(--border); 
+    padding: 14px 16px; 
+    border-radius: var(--radius-md); 
+    font-weight: 500; 
+    font-size: 0.95rem;
+    cursor: pointer;
+    outline: none;
+}
+.sort-box select:focus {
+    border-color: var(--border-hover);
 }
 
+/* =====================================================
+   DESKTOP RESPONSIVE LAYOUT (Tối ưu 3 cột)
+   ===================================================== */
 @media (min-width: 768px) {
-    .filter-section { flex-direction: row; align-items: center; justify-content: space-between; }
-    .search-box { flex: 1; max-width: 280px; }
-    .category-wrapper { flex: 2; margin: 0; padding: 0; display: flex; justify-content: center;}
-    .sort-box select { width: auto; min-width: 180px;}
+    .filter-section { 
+        flex-direction: row; 
+        align-items: center; 
+        justify-content: space-between; 
+        gap: 20px; 
+    }
+    
+    /* Ẩn tiêu đề phụ của Category trên Desktop để tránh phá vỡ bố cục dòng (nếu có trong HTML) */
+    .filter-section > div[style*="margin-top"] {
+        display: none !important;
+    }
+    
+    /* Cột Trái: Cố định Search */
+    .search-box { 
+        flex: 0 0 280px; 
+        max-width: 320px; 
+    }
+    
+    /* Cột Giữa: Trải dài linh hoạt không giới hạn */
+    .category-wrapper { 
+        flex: 1 1 auto; 
+        min-width: 0; /* BẮT BUỘC: Ép vùng chứa thu lại khi hết chỗ, kích hoạt cuộn ngang cho các nút Category */
+        display: flex; 
+        align-items: center;
+    }
+    .category-scroll { 
+        width: 100%; 
+        padding-bottom: 0; 
+    }
+    
+    /* Cột Phải: Cố định Sắp xếp */
+    .sort-box { 
+        flex: 0 0 180px; 
+    }
 }
+
+/* Màn hình siêu lớn (Laptop / PC 1024px+) */
+@media (min-width: 1024px) {
+    .filter-section {
+        gap: 24px;
+    }
+    .search-box {
+        flex: 0 0 320px; /* Kéo dài Search thoải mái */
+    }
+    .sort-box {
+        flex: 0 0 200px;
+    }
+}
+
 
 /* =====================================================
    PRODUCT CARDS (GIỮ NGUYÊN GRID 2 CỘT MOBILE)
