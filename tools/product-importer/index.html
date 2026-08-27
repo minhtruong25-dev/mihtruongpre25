@@ -2,155 +2,179 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MT Deals - Product Importer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>MT Deals Product Importer V2</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-theme">
+    
     <header class="header">
         <div class="header-container">
-            <div class="brand"><i class='bx bx-import'></i> MT Deals Importer</div>
-            <a href="../../index.html" class="btn-outline">Về trang chủ</a>
+            <div class="brand">
+                <i class='bx bx-cube-alt'></i>
+                <span>MT Deals Importer <span class="badge-v2">V2 Manual</span></span>
+            </div>
+            <div class="header-actions">
+                <span id="draft-status" class="draft-status"><i class='bx bx-cloud-upload'></i> Đã lưu nháp</span>
+                <a href="../../index.html" class="btn-outline"><i class='bx bx-home-alt'></i> <span class="desktop-only">Về MT Deals</span></a>
+            </div>
         </div>
     </header>
 
     <main class="main-container">
-        <!-- CỘT TRÁI: NHẬP LIỆU -->
-        <div class="input-section">
-            <!-- Fetch từ Link Shopee -->
-            <div class="card fetch-card">
-                <h2><i class='bx bx-link'></i> Lấy dữ liệu tự động</h2>
-                <p class="text-muted">Tính năng cần cấu hình API / Backend hợp lệ để tránh CORS.</p>
-                <div class="input-group" style="margin-top: 12px; display: flex; gap: 8px;">
-                    <input type="text" id="shopee-link" placeholder="Dán link sản phẩm Shopee...">
-                    <button class="btn-primary" id="btn-fetch"><i class='bx bx-search'></i> Lấy TT</button>
+        
+        <section class="input-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class='bx bx-edit'></i> Thông tin sản phẩm</h2>
+                    <div class="header-buttons">
+                        <button type="button" id="btn-sample" class="btn-text"><i class='bx bx-magic-wand'></i> Điền mẫu</button>
+                        <button type="button" id="btn-reset" class="btn-text text-danger"><i class='bx bx-trash'></i> Làm mới</button>
+                    </div>
                 </div>
-                <div id="fetch-status" class="status-msg hidden"></div>
-            </div>
 
-            <!-- Form nhập thủ công (Fallback) -->
-            <div class="card manual-card">
-                <h2><i class='bx bx-edit-alt'></i> Thông tin sản phẩm</h2>
-                <form id="product-form" class="form-grid">
+                <form id="product-form" class="form-grid" onsubmit="event.preventDefault();">
                     
                     <div class="form-group full-width">
-                        <label>Tên sản phẩm *</label>
-                        <input type="text" id="f-name" required placeholder="VD: Bàn phím cơ...">
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label>Link Ảnh (URL) *</label>
-                        <input type="url" id="f-image" required placeholder="https://...">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Giá bán (VNĐ) *</label>
-                        <input type="number" id="f-price" required placeholder="VD: 150000">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Giá cũ (VNĐ)</label>
-                        <input type="number" id="f-oldPrice" placeholder="VD: 250000">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Rating (0-5)</label>
-                        <input type="number" step="0.1" max="5" id="f-rating" placeholder="VD: 4.8">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Lượt đánh giá</label>
-                        <input type="number" id="f-reviews" placeholder="VD: 340">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Danh mục</label>
-                        <select id="f-category">
-                            <!-- JS Load -->
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Badge / Nhãn</label>
-                        <input type="text" id="f-badge" placeholder="HOT, SALE, NEW...">
+                        <label>ID Sản phẩm (Tự động)</label>
+                        <div class="input-with-button">
+                            <input type="text" id="f-id" readonly class="input-readonly">
+                            <button type="button" id="btn-new-id" class="btn-icon" aria-label="Tạo ID mới"><i class='bx bx-refresh'></i></button>
+                        </div>
                     </div>
 
                     <div class="form-group full-width checkbox-group">
                         <input type="checkbox" id="f-featured">
-                        <label for="f-featured" style="cursor: pointer; color: var(--warning); font-weight: 600;">🔥 Đặt làm Sản phẩm Nổi bật (Featured)</label>
+                        <label for="f-featured"><i class='bx bxs-flame'></i> Đặt làm Sản phẩm Nổi bật</label>
                     </div>
 
                     <div class="form-group full-width">
-                        <label>Tags (Cách nhau dấu phẩy)</label>
-                        <input type="text" id="f-tags" placeholder="VD: ban phim, cong nghe">
+                        <label for="f-name">Tên sản phẩm <span class="required">*</span></label>
+                        <input type="text" id="f-name" placeholder="VD: Bàn phím cơ không dây...">
                     </div>
 
                     <div class="form-group full-width">
-                        <label>Link Affiliate Shopee</label>
+                        <label for="f-image">Link Ảnh (URL) <span class="required">*</span></label>
+                        <input type="url" id="f-image" placeholder="https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="f-price">Giá bán (VNĐ) <span class="required">*</span></label>
+                        <input type="number" id="f-price" min="0" placeholder="VD: 150000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="f-oldPrice">Giá cũ (VNĐ)</label>
+                        <input type="number" id="f-oldPrice" min="0" placeholder="VD: 250000">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Giảm giá (%)</label>
+                        <input type="text" id="f-discount" readonly class="input-readonly text-danger font-bold" placeholder="0%">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="f-rating">Rating (0-5)</label>
+                        <input type="number" step="0.1" min="0" max="5" id="f-rating" placeholder="VD: 4.8">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="f-reviews">Lượt đánh giá</label>
+                        <input type="number" id="f-reviews" min="0" placeholder="VD: 340">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="f-category">Danh mục</label>
+                        <select id="f-category"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="f-badge">Badge (Nhãn)</label>
+                        <input type="text" id="f-badge" placeholder="HOT, SALE...">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="f-tags">Tags (Cách nhau dấu phẩy)</label>
+                        <input type="text" id="f-tags" placeholder="VD: ban phim, cong nghe, setup">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="f-affiliate">Link Affiliate Shopee</label>
                         <input type="url" id="f-affiliate" placeholder="https://shope.ee/...">
                     </div>
 
                     <div class="form-group full-width">
-                        <label>Mô tả ngắn</label>
-                        <textarea id="f-desc" rows="3" placeholder="Nhập mô tả sản phẩm..."></textarea>
-                    </div>
-
-                    <div class="form-group full-width" style="display: flex; gap: 12px; margin-top: 12px;">
-                        <button type="button" class="btn-secondary" id="btn-clear"><i class='bx bx-trash'></i> Xóa form</button>
+                        <label for="f-desc">Mô tả ngắn</label>
+                        <textarea id="f-desc" rows="3" placeholder="Nhập mô tả ngắn gọn..."></textarea>
                     </div>
                 </form>
             </div>
-        </div>
+        </section>
 
-        <!-- CỘT PHẢI: PREVIEW & EXPORT -->
-        <div class="preview-section">
+        <section class="output-section">
+            
             <div class="card preview-card">
                 <h2><i class='bx bx-show'></i> Live Preview</h2>
                 <div class="preview-container">
-                    <!-- Product Card UI from MT Deals -->
-                    <article class="product-card" id="card-preview">
+                    <article class="product-card">
                         <div class="card-img-wrap">
                             <span class="card-badge hidden" id="p-badge"></span>
-                            <img src="https://placehold.co/500x500/171717/a1a1aa?text=Image" alt="Preview" id="p-img" class="card-img">
+                            <img src="https://placehold.co/500x500/171717/3f3f46?text=Image" alt="Preview" id="p-img" class="card-img">
                         </div>
                         <div class="card-info">
-                            <div class="featured-label hidden" id="p-featured-label"><i class='bx bxs-flame'></i> SẢN PHẨM NỔI BẬT</div>
+                            <div class="featured-label hidden" id="p-featured"><i class='bx bxs-flame'></i> SẢN PHẨM NỔI BẬT</div>
                             <h3 class="card-title" id="p-name">Tên sản phẩm</h3>
-                            <p class="card-desc desktop-only" id="p-desc">Mô tả sẽ hiển thị ở đây...</p>
+                            <p class="card-desc" id="p-desc">Mô tả sản phẩm sẽ hiển thị ở đây...</p>
                             <div class="card-rating">
-                                <i class='bx bxs-star'></i> <span id="p-rating-review">0 (0 đánh giá)</span>
+                                <i class='bx bxs-star'></i> <span id="p-rating-reviews">0 (0 đánh giá)</span>
                             </div>
                             <div class="card-price-wrap">
                                 <span class="card-price" id="p-price">0 ₫</span>
-                                <div style="display:flex; gap:8px; align-items:center;">
+                                <div class="price-old-wrap">
                                     <span class="card-old-price hidden" id="p-old-price"></span>
                                     <span class="discount hidden" id="p-discount"></span>
                                 </div>
                             </div>
-                            <button class="card-cta">Xem chi tiết</button>
+                            <button type="button" class="card-cta">Xem chi tiết</button>
                         </div>
                     </article>
                 </div>
             </div>
 
             <div class="card export-card">
-                <h2><i class='bx bx-code-alt'></i> Product Data Output</h2>
-                <p class="text-muted" style="margin-bottom: 12px; font-size: 0.85rem;">Copy code này và dán vào mảng PRODUCTS trong file data/products.js của website MT Deals.</p>
-                <div class="code-container">
+                <div class="card-header">
+                    <h2><i class='bx bx-code-alt'></i> Product Data</h2>
+                    <div id="validation-status" class="status-badge error"><i class='bx bx-error'></i> Thiếu thông tin</div>
+                </div>
+                
+                <div class="code-wrapper">
                     <pre><code id="code-output"></code></pre>
                 </div>
+                
                 <div class="export-actions">
-                    <button class="btn-primary" id="btn-copy"><i class='bx bx-copy'></i> Copy Product Data</button>
-                    <button class="btn-outline" id="btn-download"><i class='bx bx-download'></i> Tải Product JSON</button>
+                    <button type="button" class="btn-primary" id="btn-copy" disabled><i class='bx bx-copy'></i> Copy Product Data</button>
+                    <button type="button" class="btn-outline" id="btn-download"><i class='bx bx-download'></i> Tải JSON</button>
                 </div>
             </div>
-        </div>
+        </section>
+
     </main>
+
+    <div id="custom-modal" class="modal hidden" role="dialog" aria-modal="true">
+        <div class="modal-backdrop" id="modal-close-bg"></div>
+        <div class="modal-box">
+            <h3><i class='bx bx-trash text-danger'></i> Xác nhận làm mới</h3>
+            <p>Toàn bộ dữ liệu đang nhập sẽ bị xóa và không thể khôi phục. Bạn có chắc chắn?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn-outline" id="modal-cancel">Hủy bỏ</button>
+                <button type="button" class="btn-primary bg-danger" id="modal-confirm">Đồng ý xóa</button>
+            </div>
+        </div>
+    </div>
 
     <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
-  
