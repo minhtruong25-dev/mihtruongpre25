@@ -300,30 +300,59 @@ function initTheme() {
 }
 
 // =====================================================
-// SCROLL ANIMATIONS (Intersection Observer)
+// SCROLL ANIMATIONS (Intersection Observer - FLUID V2.1)
 // =====================================================
 function initScrollAnimations() {
-    // Tắt animation nếu user đang bật chế độ giảm hiệu ứng chuyển động trên HĐH
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // 1. Tắt animation nếu user đang bật chế độ giảm hiệu ứng trên HĐH
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('.js-product-card, .fade-up').forEach(el => el.classList.add('is-visible'));
+        return;
+    }
 
     const cards = document.querySelectorAll('.js-product-card');
-    cards.forEach(card => {
-        if (!card.classList.contains('card-reveal')) {
-            card.classList.add('card-reveal');
-        }
-    });
-
-    const observer = new IntersectionObserver((entries, obs) => {
+    
+    // Observer cho Product Cards
+    const cardObserver = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('is-visible');
+                
+                // Sau khi thẻ đã hiện lên xong (800ms), gỡ bỏ transition-delay.
+                // Điều này giúp hiệu ứng HOVER sau này không bị delay giật lag.
+                setTimeout(() => {
+                    if(entry.target) entry.target.style.transitionDelay = '0ms';
+                }, 800);
+                
                 obs.unobserve(entry.target); 
+            }
+        });
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 });
+
+    // Gắn Class và tính toán Delay lệch nhịp (Staggered Delay: 0, 60, 120...)
+    cards.forEach((card, index) => {
+        if (!card.classList.contains('card-reveal')) {
+            card.classList.add('card-reveal');
+        }
+        // Giới hạn max delay là 600ms để người dùng cuộn nhanh không phải chờ quá lâu
+        const delay = Math.min((index % 15) * 60, 600);
+        card.style.transitionDelay = `${delay}ms`;
+        cardObserver.observe(card);
+    });
+
+    // Observer cho các Section khác (About, Trust, Footer...)
+    const sections = document.querySelectorAll('.fade-up:not(.is-visible)');
+    const sectionObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
             }
         });
     }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
 
-    cards.forEach(card => observer.observe(card));
+    sections.forEach(sec => sectionObserver.observe(sec));
 }
+
 
 // KHỞI CHẠY DUY NHẤT 1 LẦN KHI LOAD TRANG
 document.addEventListener('DOMContentLoaded', initApp);
