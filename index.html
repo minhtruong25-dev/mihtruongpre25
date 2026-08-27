@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>MT Deals — Khám phá sản phẩm đáng mua</title>
+    <meta name="description" content="Sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống.">
+    
+    <meta property="og:title" content="MT Deals — Khám phá sản phẩm đáng mua">
+    <meta property="og:description" content="Sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://minhtruong25-dev.github.io/mihtruongpre25/">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <link rel="stylesheet" href="style.css?v=2.2">
+</head>
+<body class="dark-theme">
+    <div class="ambient-glow"></div>
+
+    <nav class="navbar" aria-label="Main Navigation">
+        <div class="nav-container">
+            <a href="#" class="brand-logo" aria-label="Trang chủ">
+                <i class='bx bx-cube-alt'></i>
+                <span id="nav-brand-name">MT Deals</span>
+            </a>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Đổi giao diện">
+                <i class='bx bx-moon'></i>
+            </button>
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <div class="hero-content">
+            <div class="hero-profile">
+                <div class="avatar-ring">
+                    <img id="hero-avatar" src="" alt="Minh Trường" class="avatar" loading="eager">
+                </div>
+                <div id="hero-author" class="hero-author-name"></div>
+                <p id="hero-username" class="hero-username"></p>
+                <p id="hero-bio" class="hero-bio hidden"></p>
+                <div id="social-container" class="social-links" aria-label="Mạng xã hội">
+                    <!-- JS Render -->
+                </div>
+            </div>
+            
+            <div class="hero-message">
+                <h1 class="hero-title">Khám phá những món đồ<br><span class="text-gradient">đáng mua</span></h1>
+                <p class="hero-subtitle">Công nghệ &middot; Gaming &middot; Học tập &middot; Đời sống</p>
+                <button id="hero-cta" class="btn-primary hero-cta">🔥 Xem sản phẩm</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container" id="products-section">
+        
+        <section class="filter-section" aria-label="Bộ lọc sản phẩm">
+            <div class="search-box">
+                <i class='bx bx-search'></i>
+                <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm, tag..." aria-label="Tìm kiếm">
+            </div>
+
+            <div class="category-wrapper">
+                <div class="category-scroll" id="category-container">
+                    <!-- JS Render Categories -->
+                </div>
+            </div>
+
+            <div class="sort-box">
+                <select id="sort-select" aria-label="Sắp xếp sản phẩm">
+                    <option value="featured">🔥 Nổi bật nhất</option>
+                    <option value="price-asc">💰 Giá thấp → cao</option>
+                    <option value="price-desc">💎 Giá cao → thấp</option>
+                    <option value="rating-desc">⭐ Rating cao</option>
+                    <option value="discount-desc">🏷️ Giảm giá cao</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- FEATURED PRODUCT -->
+        <section id="featured-container" class="featured-wrapper" aria-label="Sản phẩm nổi bật">
+            <!-- JS Render -->
+        </section>
+
+        <!-- PRODUCT GRID -->
+        <section class="products-grid" id="product-container" aria-label="Danh sách sản phẩm">
+            <!-- JS Render -->
+        </section>
+
+        <!-- EMPTY STATE -->
+        <div id="empty-state" class="empty-state hidden">
+            <div class="empty-icon"><i class='bx bx-ghost'></i></div>
+            <p>Không tìm thấy sản phẩm phù hợp.</p>
+        </div>
+
+        <!-- ABOUT & TRUST SECTION -->
+        <section class="trust-section" style="margin-top: 48px;">
+            <div class="trust-grid">
+                <!-- About -->
+                <div class="trust-card about-card">
+                    <div class="trust-icon"><i class='bx bx-user-circle'></i></div>
+                    <h3>Về MT Deals</h3>
+                    <p>Mình chọn lọc những sản phẩm hữu ích và đáng để tham khảo.</p>
+                </div>
+                
+                <!-- Trust -->
+                <div class="trust-card">
+                    <div class="trust-icon"><i class='bx bx-check-shield'></i></div>
+                    <ul class="trust-list" style="display: flex; flex-direction: column; gap: 16px;">
+                        <li style="align-items: flex-start;">
+                            <i class='bx bx-search-alt' style="font-size: 1.5rem; margin-top: 2px;"></i>
+                            <div style="display: flex; flex-direction: column;">
+                                <strong style="color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">🔎 Chọn lọc</strong>
+                                <span>Những sản phẩm đáng để xem qua.</span>
+                            </div>
+                        </li>
+                        <li style="align-items: flex-start;">
+                            <i class='bx bx-detail' style="font-size: 1.5rem; margin-top: 2px;"></i>
+                            <div style="display: flex; flex-direction: column;">
+                                <strong style="color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">📝 Rõ ràng</strong>
+                                <span>Thông tin cần thiết, dễ tham khảo.</span>
+                            </div>
+                        </li>
+                        <li style="align-items: flex-start;">
+                            <i class='bx bx-link-external' style="font-size: 1.5rem; margin-top: 2px;"></i>
+                            <div style="display: flex; flex-direction: column;">
+                                <strong style="color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">🔗 Minh bạch</strong>
+                                <span>Một số liên kết có thể là affiliate.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="affiliate-disclosure">
+                <i class='bx bx-info-circle'></i>
+                <p>Một số liên kết trên MT Deals là liên kết affiliate. Mình có thể nhận hoa hồng khi bạn mua hàng qua liên kết, không làm tăng giá bạn trả.</p>
+            </div>
+            
+            <div class="footer-bottom" style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <div style="font-weight: 700; font-size: 1.15rem; color: var(--text-primary);">MT Deals</div>
+                <div style="color: var(--text-secondary); font-weight: 500;">Minh Trường · @minhtruong06</div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 400px; margin: 8px auto 16px;">"Khám phá những món đồ đáng mua."</p>
+                <p>&copy; <span id="current-year"></span> Minh Trường. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="product-modal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="modal-overlay" id="modal-overlay" aria-label="Đóng modal"></div>
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn" aria-label="Đóng (ESC)"><i class='bx bx-x'></i></button>
+            <div id="modal-body">
+                <!-- JS Render -->
+            </div>
+        </div>
+    </div>
+
+    <button id="back-to-top" class="back-to-top hidden" aria-label="Lên đầu trang">
+        <i class='bx bx-up-arrow-alt'></i>
+    </button>
+
+    <script src="config.js"></script>
+    <script src="data/categories.js"></script>
+    <script src="data/products.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
