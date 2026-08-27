@@ -1,5 +1,5 @@
 // ======================================================
-// ⚙️ MT DEALS — NATIVE SCROLL & MICRO-INTERACTIONS
+// ⚙️ MT DEALS — APP LOGIC (SCROLL & MICRO-INTERACTION OPTIMIZED)
 // ======================================================
 
 const AppState = {
@@ -8,7 +8,7 @@ const AppState = {
     sort: 'featured'
 };
 
-// Khai báo duy nhất 1 Observer để không rác bộ nhớ
+// Global Observers - Chống memory leak & render lặp
 let globalRevealObserver = null;
 
 const formatCurrency = (num) => {
@@ -75,7 +75,7 @@ function renderProducts() {
     const emptyState = document.getElementById('empty-state');
     if (!grid || !featuredContainer || !emptyState) return;
 
-    // Ngắt theo dõi các thẻ cũ trước khi xóa khỏi DOM
+    // Ngắt theo dõi các thẻ cũ trước khi xóa DOM để chống leak
     if (globalRevealObserver) {
         globalRevealObserver.disconnect();
     }
@@ -113,11 +113,11 @@ function renderProducts() {
 
     featuredContainer.innerHTML = featuredProduct ? generateCardHTML(featuredProduct, true) : '';
     
-    // Gộp quá trình render DOM vào RequestAnimationFrame để máy không bị khựng
+    // Batch DOM Update qua rAF
     window.requestAnimationFrame(() => {
         grid.innerHTML = normalProducts.map(p => generateCardHTML(p, false)).join('');
         
-        // Gọi Observer ở frame tiếp theo để chắc chắn DOM đã được vẽ
+        // Gọi scroll animation sau khi DOM đã vẽ
         window.requestAnimationFrame(() => {
             initScrollAnimations();
         });
@@ -128,12 +128,13 @@ function generateCardHTML(p, isFeatured) {
     const badgeStr = p.badge ? `<span class="card-badge ${p.badge.includes('HOT') ? 'hot' : ''}">${p.badge}</span>` : '';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
+    // Fallback ảnh trống khi lỗi để tránh reflow layout
     const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/27272a/a1a1aa?text=No+Image'`;
     const labelFeatured = isFeatured ? `<div class="featured-label"><i class='bx bxs-flame'></i> SẢN PHẨM NỔI BẬT</div>` : '';
     
     const descHTML = p.description ? `<p class="card-desc ${isFeatured ? '' : 'desktop-only'}">${p.description}</p>` : '';
 
-    // loading="lazy" kết hợp decoding="async" giúp kéo thả cuộn trang không bị lag ảnh
+    // Tối ưu ảnh: loading="lazy" và decoding="async" giúp load ảnh ko chặn scroll
     return `
         <article class="product-card js-product-card card-reveal ${isFeatured ? 'featured-card' : ''}" data-id="${p.id}" tabindex="0">
             <div class="card-img-wrap">
@@ -279,6 +280,7 @@ function initTheme() {
     });
 }
 
+// BTT - Tối ưu Scroll: Dùng Observer để theo dõi Hero Section thay vì sự kiện Scroll liên tục
 function setupBackToTopObserver() {
     const btt = document.getElementById('back-to-top');
     const heroSection = document.querySelector('.hero-section');
@@ -302,7 +304,7 @@ function setupBackToTopObserver() {
 }
 
 // =====================================================
-// SCROLL REVEAL - GIẢI QUYẾT TẬN GỐC LỖI "DÍNH SCROLL"
+// SCROLL REVEAL (TỐI ƯU CỰC NHẸ CHO ĐIỆN THOẠI)
 // =====================================================
 function initScrollAnimations() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -312,21 +314,17 @@ function initScrollAnimations() {
 
     if (!globalRevealObserver) {
         globalRevealObserver = new IntersectionObserver((entries, obs) => {
-            // Không tính toán rườm rà. Dùng requestAnimationFrame batch DOM writes.
-            window.requestAnimationFrame(() => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        // Gỡ ngay lập tức để tiết kiệm Memory
-                        obs.unobserve(entry.target); 
-                    }
-                });
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Gỡ Observer ngay lập tức để tiết kiệm Memory
+                    obs.unobserve(entry.target); 
+                }
             });
         }, { 
-            // Vùng kích hoạt mở rộng tới 600px dưới mép màn hình.
-            // Điều này đảm bảo thẻ ĐÃ ĐƯỢC RENDER (opacity: 1) TỪ LÂU TRƯỚC KHI BẠN VUỐT TỚI NÓ.
-            // Loại bỏ hoàn toàn sự chờ đợi và khựng.
-            rootMargin: '600px 0px 600px 0px', 
+            // Cốt lõi tránh khựng: Kích hoạt thẻ từ khoảng cách rất xa (1000px)
+            // Khi người dùng vuốt đến, thẻ đã render xong, hoàn toàn không bị delay.
+            rootMargin: '1000px 0px 1000px 0px', 
             threshold: 0 
         });
     }
@@ -338,7 +336,7 @@ function initScrollAnimations() {
 
     const newCards = document.querySelectorAll('.js-product-card:not(.is-visible)');
     newCards.forEach((card) => {
-        // KHÔNG còn transition-delay (stagger). Animation kích hoạt dứt khoát.
+        // KHÔNG dùng JS Transition-Delay hay setTimeout gây Block Scroll
         globalRevealObserver.observe(card);
     });
 }
