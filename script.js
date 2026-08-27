@@ -8,7 +8,7 @@ const AppState = {
     sort: 'featured'
 };
 
-// Global Observers - Chống memory leak
+// Global Observers
 let globalRevealObserver = null;
 
 const formatCurrency = (num) => {
@@ -71,7 +71,6 @@ function renderProducts() {
     const emptyState = document.getElementById('empty-state');
     if (!grid || !featuredContainer || !emptyState || typeof PRODUCTS === 'undefined') return;
 
-    // Ngắt theo dõi các thẻ cũ trước khi xóa DOM
     if (globalRevealObserver) globalRevealObserver.disconnect();
 
     const term = AppState.searchQuery.toLowerCase();
@@ -105,7 +104,6 @@ function renderProducts() {
 
     featuredContainer.innerHTML = featuredProduct ? generateCardHTML(featuredProduct, true) : '';
     
-    // Batch DOM Update qua rAF để tối ưu reflow
     window.requestAnimationFrame(() => {
         grid.innerHTML = normalProducts.map(p => generateCardHTML(p, false)).join('');
         window.requestAnimationFrame(() => {
@@ -120,8 +118,10 @@ function generateCardHTML(p, isFeatured) {
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
     const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/111111/52525b?text=No+Image'`;
-    const labelFeatured = isFeatured ? `<div class="featured-label"><i class='bx bxs-flame'></i> Nổi bật nhất</div>` : '';
-    const descHTML = p.description ? `<p class="card-desc">${p.description}</p>` : '';
+    
+    // Featured layout vs Normal layout
+    const labelFeatured = isFeatured ? `<div class="featured-label">FEATURED DEAL</div>` : '';
+    const descHTML = p.description ? `<p class="card-desc ${isFeatured ? '' : 'desktop-only'}">${p.description}</p>` : '';
 
     return `
         <article class="product-card js-product-card card-reveal ${isFeatured ? 'featured-card' : ''}" data-id="${p.id}" tabindex="0">
@@ -155,19 +155,19 @@ function openModal(id) {
     const body = document.getElementById('modal-body');
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
-    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--accent); font-weight:800; padding:2px 8px; background:var(--accent-bg); border-radius:6px;">-${p.discount}%</span>` : '';
+    const discount = p.discount ? `<span style="font-size:0.85rem; color:var(--accent); font-weight:700; padding:4px 8px; background:var(--accent-bg); border-radius:6px;">-${p.discount}%</span>` : '';
 
     body.innerHTML = `
         <div class="modal-grid">
             <img src="${p.image}" class="modal-img" alt="${p.name}">
             <div class="modal-info">
                 <h2 class="modal-title">${p.name}</h2>
-                <div class="card-rating" style="margin-bottom: 16px;">
-                    <i class='bx bxs-star'></i> <span>${p.rating || 0} (${p.reviews || 0} đánh giá)</span>
+                <div class="card-rating" style="margin-bottom: 16px; font-size: 0.9rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+                    <i class='bx bxs-star' style="color: var(--accent);"></i> <span>${p.rating || 0} (${p.reviews || 0} đánh giá)</span>
                 </div>
-                <div class="card-price-wrap" style="margin-bottom: 24px;">
-                    <span class="card-price" style="font-size: 1.6rem;">${price}</span>
-                    <div style="display:flex; gap:12px; align-items:center;">${oldPrice} ${discount}</div>
+                <div class="card-price-wrap" style="margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+                    <span class="card-price" style="font-size: 1.6rem; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif;">${price}</span>
+                    ${oldPrice} ${discount}
                 </div>
                 <p class="modal-desc">${p.description}</p>
                 <button class="modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl}" data-id="${p.id}">
@@ -276,11 +276,11 @@ function setupBackToTopObserver() {
 }
 
 // =====================================================
-// SCROLL REVEAL (NO LAG, PRE-LOAD)
+// SCROLL REVEAL (NO LAG, NATIVE SCROLL)
 // =====================================================
 function initScrollAnimations() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('.js-product-card, .trust-section, .footer').forEach(el => el.classList.add('is-visible'));
+        document.querySelectorAll('.js-product-card, .trust-section').forEach(el => el.classList.add('is-visible'));
         return;
     }
 
@@ -295,12 +295,13 @@ function initScrollAnimations() {
                 });
             });
         }, { 
+            // Tải trước 600px để mobile scroll không bị chờ
             rootMargin: '600px 0px 600px 0px', 
             threshold: 0 
         });
     }
 
-    document.querySelectorAll('.trust-section:not(.is-visible), .footer:not(.is-visible)').forEach(sec => {
+    document.querySelectorAll('.trust-section:not(.is-visible)').forEach(sec => {
         sec.classList.add('reveal-section');
         globalRevealObserver.observe(sec);
     });

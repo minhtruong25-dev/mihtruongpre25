@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>MT Deals — Khám phá sản phẩm đáng mua</title>
-    <meta name="description" content="Sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống.">
+    <title>MT Deals — Smart finds. Better deals.</title>
+    <meta name="description" content="Khám phá những món đồ công nghệ, gaming và học tập đáng mua nhất.">
     
-    <meta property="og:title" content="MT Deals — Khám phá sản phẩm đáng mua">
-    <meta property="og:description" content="Sản phẩm hữu ích cho học tập, công nghệ, gaming và cuộc sống.">
+    <meta property="og:title" content="MT Deals — Smart finds. Better deals.">
+    <meta property="og:description" content="Khám phá những món đồ công nghệ, gaming và học tập đáng mua nhất.">
     <meta property="og:type" content="website">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-    <link rel="stylesheet" href="style.css?v=3.0">
+    <link rel="stylesheet" href="style.css?v=3.5">
 </head>
 <body class="dark-theme">
 
@@ -33,17 +33,20 @@
 
     <header class="hero-section">
         <div class="hero-content">
-            <div class="hero-profile-minimal">
-                <img id="hero-avatar" src="" alt="Minh Trường" class="hero-avatar" loading="eager">
-                <div class="hero-author-info">
-                    <span id="hero-author" class="hero-author-name"></span>
-                    <span id="hero-username" class="hero-username"></span>
+            <div class="brand-badge">MT DEALS</div>
+            <h1 class="hero-title">Smart finds.<br><span class="text-accent">Better deals.</span></h1>
+            <p class="hero-subtitle">Những sản phẩm công nghệ, học tập và đời sống đáng mua nhất được chọn lọc dành riêng cho bạn.</p>
+            
+            <div class="hero-curator">
+                <img id="hero-avatar" src="" alt="Avatar" class="curator-avatar" loading="eager">
+                <div class="curator-info">
+                    <span class="curator-label">Curated by</span>
+                    <span id="hero-author" class="curator-name"></span>
+                    <span id="hero-username" class="hidden"></span>
+                    <span id="hero-bio" class="hidden"></span>
                 </div>
             </div>
-            
-            <h1 class="hero-title">Khám phá những món đồ <span class="text-gradient">đáng mua</span></h1>
-            <p class="hero-subtitle">Tuyển chọn các sản phẩm công nghệ, học tập và đời sống tốt nhất.</p>
-            
+
             <div id="social-container" class="social-links" aria-label="Mạng xã hội">
                 <!-- JS Render -->
             </div>
@@ -55,7 +58,7 @@
         <section class="filter-section" aria-label="Bộ lọc sản phẩm">
             <div class="search-box">
                 <i class='bx bx-search'></i>
-                <input type="text" id="search-input" placeholder="Tìm sản phẩm, thương hiệu..." aria-label="Tìm kiếm">
+                <input type="text" id="search-input" placeholder="Tìm sản phẩm, thương hiệu hoặc danh mục..." aria-label="Tìm kiếm">
             </div>
 
             <div class="category-wrapper">
@@ -94,38 +97,20 @@
         <!-- ABOUT & TRUST SECTION -->
         <section class="trust-section">
             <div class="trust-grid">
-                <!-- About -->
                 <div class="trust-card">
-                    <div class="trust-icon"><i class='bx bx-diamond'></i></div>
-                    <h3>Về MT Deals</h3>
-                    <p>Mục tiêu của mình là giúp bạn tiết kiệm thời gian tìm kiếm bằng cách chọn lọc những sản phẩm thực sự hữu ích và đáng tiền.</p>
+                    <div class="trust-number">01</div>
+                    <h3>Chọn lọc</h3>
+                    <p>Chỉ giới thiệu những sản phẩm có chất lượng thực sự tốt và đáng tiền nhất.</p>
                 </div>
-                
-                <!-- Trust -->
                 <div class="trust-card">
-                    <ul class="trust-list">
-                        <li>
-                            <i class='bx bx-check-shield'></i>
-                            <div>
-                                <strong>Chọn lọc kỹ lưỡng</strong>
-                                <span>Chỉ giới thiệu những sản phẩm chất lượng.</span>
-                            </div>
-                        </li>
-                        <li>
-                            <i class='bx bx-list-ul'></i>
-                            <div>
-                                <strong>Thông tin rõ ràng</strong>
-                                <span>Đánh giá trung thực, dễ tham khảo.</span>
-                            </div>
-                        </li>
-                        <li>
-                            <i class='bx bx-link-external'></i>
-                            <div>
-                                <strong>Minh bạch affiliate</strong>
-                                <span>Ủng hộ mình qua link không làm tăng giá mua.</span>
-                            </div>
-                        </li>
-                    </ul>
+                    <div class="trust-number">02</div>
+                    <h3>Giá trị</h3>
+                    <p>Luôn cập nhật những deal giảm giá và ưu đãi thiết thực giúp bạn tiết kiệm.</p>
+                </div>
+                <div class="trust-card">
+                    <div class="trust-number">03</div>
+                    <h3>Minh bạch</h3>
+                    <p>Một số link có thể là affiliate, ủng hộ mình nhưng không làm tăng giá bạn trả.</p>
                 </div>
             </div>
         </section>
@@ -133,16 +118,12 @@
 
     <footer class="footer">
         <div class="footer-container">
+            <div class="footer-brand">MT Deals</div>
+            <div class="footer-curator">Curated by Minh Trường · @minhtruong06</div>
             <div class="affiliate-disclosure">
-                <i class='bx bx-info-circle'></i>
-                <p>Một số liên kết trên website là liên kết affiliate. Mình có thể nhận một khoản hoa hồng nhỏ khi bạn mua hàng qua các liên kết này, và điều đó hoàn toàn không làm tăng giá sản phẩm bạn phải trả.</p>
+                <p>Một số liên kết trên website là liên kết affiliate. Mình có thể nhận hoa hồng nhỏ khi bạn mua hàng, không làm tăng giá sản phẩm.</p>
             </div>
-            
-            <div class="footer-bottom">
-                <strong>MT Deals</strong>
-                <span style="margin: 8px 0; color: var(--text-secondary);">Minh Trường · @minhtruong06</span>
-                <p>&copy; <span id="current-year"></span> All rights reserved.</p>
-            </div>
+            <div class="footer-copyright">&copy; <span id="current-year"></span> MT Deals. All rights reserved.</div>
         </div>
     </footer>
 
