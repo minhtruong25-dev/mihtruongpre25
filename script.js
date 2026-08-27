@@ -1,5 +1,5 @@
 // ======================================================
-// ⚙️ MT DEALS — NATIVE SCROLL & MICRO-INTERACTIONS V2.1
+// ⚙️ MT DEALS — APP LOGIC (PERFORMANCE KINGS)
 // ======================================================
 
 const AppState = {
@@ -113,7 +113,7 @@ function renderProducts() {
 
     featuredContainer.innerHTML = featuredProduct ? generateCardHTML(featuredProduct, true) : '';
     
-    // Batch DOM Update qua rAF để tối ưu reflow
+    // Batch DOM Update qua rAF
     window.requestAnimationFrame(() => {
         grid.innerHTML = normalProducts.map(p => generateCardHTML(p, false)).join('');
         
@@ -129,11 +129,11 @@ function generateCardHTML(p, isFeatured) {
     const discountStr = p.discount ? `<div class="card-discount">-${p.discount}%</div>` : '';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
-    
     // Fallback ảnh trống khi lỗi để tránh reflow layout
     const fallback = `this.onerror=null; this.src='https://placehold.co/500x500/111111/52525b?text=No+Image'`;
     const labelFeatured = isFeatured ? `<div class="featured-label"><i class='bx bxs-flame'></i> DEAL NỔI BẬT</div>` : '';
-    const descHTML = p.description ? `<p class="card-desc">${p.description}</p>` : '';
+    
+    const descHTML = p.description ? `<p class="card-desc ${isFeatured ? '' : 'desktop-only'}">${p.description}</p>` : '';
 
     // Tối ưu ảnh: loading="lazy" và decoding="async" giúp load ảnh ko chặn scroll
     return `
@@ -183,7 +183,7 @@ function openModal(id) {
                     <div style="display:flex; gap:12px; align-items:center;">${oldPrice} ${discount}</div>
                 </div>
                 <p class="modal-desc">${p.description}</p>
-                <button class="modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl}" data-id="${p.id}">
+                <button class="btn-primary modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl}" data-id="${p.id}">
                     Xem trên Shopee <i class='bx bx-link-external'></i>
                 </button>
             </div>
