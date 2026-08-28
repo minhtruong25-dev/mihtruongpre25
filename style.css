@@ -1,5 +1,5 @@
 /* =====================================================
-   🎨 MT DEALS V3.5 — IMAGE SYSTEM PERFECTED
+   🎨 MT DEALS V4.0 — IMAGE SYSTEM & FEATURED PERFECTED
    ===================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
@@ -99,14 +99,13 @@ img { max-width: 100%; display: block; }
 }
 
 /* =====================================================
-   PAGE ENTRANCE (~2.4 GIÂY TỔNG THỂ)
+   PAGE ENTRANCE
    ===================================================== */
 @keyframes pageEntranceSmooth {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Thời gian diễn ra 600ms, Delay tịnh tiến */
 .navbar { opacity: 0; animation: pageEntranceSmooth 600ms cubic-bezier(0.22, 1, 0.36, 1) 0ms forwards; }
 .hero-curator { opacity: 0; animation: pageEntranceSmooth 600ms cubic-bezier(0.22, 1, 0.36, 1) 200ms forwards; }
 .brand-badge, .hero-title, .hero-subtitle, .social-links { opacity: 0; animation: pageEntranceSmooth 600ms cubic-bezier(0.22, 1, 0.36, 1) 400ms forwards; }
@@ -117,7 +116,7 @@ img { max-width: 100%; display: block; }
 .trust-section, .footer { opacity: 0; animation: pageEntranceSmooth 600ms cubic-bezier(0.22, 1, 0.36, 1) 1800ms forwards; }
 
 /* =====================================================
-   SCROLL REVEAL (GIỮ NGUYÊN BẢO VỆ NATIVE SCROLL)
+   SCROLL REVEAL
    ===================================================== */
 .card-reveal, .reveal-section { opacity: 0; transition: opacity 300ms ease-out; }
 .card-reveal.is-visible, .reveal-section.is-visible { opacity: 1; }
@@ -151,7 +150,7 @@ img { max-width: 100%; display: block; }
 .theme-toggle { font-size: 1.4rem; color: var(--text-secondary); cursor: pointer; padding: 4px; transition: var(--transition-micro); display: flex;}
 
 /* =====================================================
-   HERO & PROFILE (GIỮ ĐÚNG BẢN GỐC CỦA BẠN)
+   HERO & PROFILE
    ===================================================== */
 .hero-section { padding: 120px 16px 48px; text-align: center; }
 .hero-content { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
@@ -163,7 +162,6 @@ img { max-width: 100%; display: block; }
 
 .hero-subtitle { font-size: 1.1rem; color: var(--text-secondary); max-width: 540px; margin: 0 auto 32px; font-weight: 400; line-height: 1.6; }
 
-/* Nguyên gốc thẻ Profile & Avatar 32px */
 .hero-curator { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; padding: 8px 16px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-surface); }
 .curator-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
 .curator-info { display: flex; flex-direction: column; align-items: flex-start; }
@@ -201,12 +199,20 @@ img { max-width: 100%; display: block; }
 }
 
 /* =====================================================
-   GIẢI QUYẾT LỖI ẢNH 1: FEATURED PRODUCT
+   FEATURED PRODUCT - FULL WIDTH & OPTIMIZED
    ===================================================== */
 .featured-wrapper { margin-bottom: 40px; }
-.featured-card { display: flex; flex-direction: column; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; height: 100%; }
+.featured-card { 
+    display: flex; 
+    flex-direction: column; 
+    background: var(--bg-surface); 
+    border: 1px solid var(--border); 
+    border-radius: var(--radius-xl); 
+    overflow: hidden; 
+    height: 100%; 
+}
 
-/* Mobile Featured */
+/* Mobile & Tablet Featured Base */
 .featured-card .card-img-wrap { 
     width: 100%; 
     aspect-ratio: 16/9; 
@@ -218,42 +224,64 @@ img { max-width: 100%; display: block; }
     position: absolute; 
     top: 0; left: 0; 
     width: 100%; height: 100%; 
-    padding: 0; /* Cho ảnh bung full sát mép vùng 16/9 */
+    padding: 0; 
     box-sizing: border-box;
-    object-fit: contain; /* Giữ nguyên toàn bộ chi tiết, không crop */
+    object-fit: contain; 
     z-index: 1;
 }
 
-.featured-card .card-info { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
-.featured-label { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-bg); color: var(--accent); font-weight: 700; font-size: 0.75rem; padding: 6px 12px; border-radius: var(--radius-pill); width: max-content; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em;}
+.featured-card .card-info { 
+    padding: 24px; 
+    display: flex; 
+    flex-direction: column; 
+    flex-grow: 1; 
+}
+.featured-label { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 6px; 
+    background: var(--accent-bg); 
+    color: var(--accent); 
+    font-weight: 700; 
+    font-size: 0.75rem; 
+    padding: 6px 12px; 
+    border-radius: var(--radius-pill); 
+    width: max-content; 
+    margin-bottom: 16px; 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em;
+}
 
-/* Desktop Featured */
+/* Desktop Featured - ROW LAYOUT, FULL WIDTH */
 @media (min-width: 768px) {
-    .featured-card { flex-direction: row; align-items: stretch; }
-    
+    .featured-card { 
+        flex-direction: row; 
+        align-items: stretch; 
+    }
     .featured-card .card-img-wrap { 
-        width: 50%; /* Trả lại vùng hiển thị cân đối cho ảnh so với phần text */
-        aspect-ratio: 16/9; 
+        width: 55%; /* Phân chia cân đối, lấy không gian đủ lớn cho ảnh */
+        aspect-ratio: 16/9; /* Tỷ lệ rộng, không ép cứng min-height */
         border-bottom: none; 
         border-right: 1px solid var(--border); 
-        min-height: unset; /* Xóa min-height tĩnh gây lỗi vùng xám */
         position: relative;
     }
     .featured-card .card-img {
-        padding: 0; /* Xóa khoảng đệm tĩnh lớn gây bóp nghẹt ảnh */
-        box-sizing: border-box;
-        object-fit: contain;
+        padding: 0; /* Xóa khoảng trống thừa, ảnh chạm viền an toàn nhờ object-fit */
+        object-fit: contain; 
     }
-    
-    .featured-card .card-info { width: 50%; padding: 48px; justify-content: center; }
-    .featured-card .card-title { font-size: 1.75rem; margin-bottom: 12px; }
-    .featured-card .card-desc { display: -webkit-box; font-size: 1rem; margin-bottom: 24px; color: var(--text-secondary); line-height: 1.6;}
-    .featured-card .card-price { font-size: 1.8rem; }
-    .featured-card .card-cta { width: max-content; padding: 14px 32px; }
+    .featured-card .card-info { 
+        width: 45%; 
+        padding: 48px; 
+        justify-content: center; 
+    }
+    .featured-card .card-title { font-size: 2rem; margin-bottom: 12px; line-height: 1.3; }
+    .featured-card .card-desc { display: -webkit-box; font-size: 1.05rem; margin-bottom: 24px; color: var(--text-secondary); line-height: 1.6; }
+    .featured-card .card-price { font-size: 2rem; }
+    .featured-card .card-cta { width: max-content; padding: 14px 32px; font-size: 1.05rem; }
 }
 
 /* =====================================================
-   GIẢI QUYẾT LỖI ẢNH 2: PRODUCT CARDS (LƯỚI GRID)
+   PRODUCT CARDS (LƯỚI GRID)
    ===================================================== */
 .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 
@@ -261,13 +289,13 @@ img { max-width: 100%; display: block; }
     background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg); 
     overflow: hidden; display: flex; flex-direction: column; cursor: pointer; 
     transition: var(--transition-micro);
-    height: 100%; /* Cố định flex column cho đồng đều chiều cao thẻ trong row */
+    height: 100%; 
 }
 
 .card-img-wrap { 
     position: relative; 
     width: 100%;
-    aspect-ratio: 4/3; /* Sử dụng tỷ lệ 4/3 phù hợp cho đồ công nghệ thay vì vuông 1:1 gây dư xám */
+    aspect-ratio: 4/3; 
     overflow: hidden; 
     background: var(--bg-elevated); 
     border-bottom: 1px solid var(--border);
@@ -277,20 +305,21 @@ img { max-width: 100%; display: block; }
     position: absolute; 
     top: 0; left: 0; 
     width: 100%; height: 100%; 
-    padding: 0; /* Xóa padding lọt thỏm, cho ảnh bám sát wrapper */
+    padding: 0; 
     box-sizing: border-box;
-    object-fit: contain; /* Giữ tỷ lệ chuẩn, tuyệt đối không crop */
+    object-fit: contain; 
     transition: transform 300ms var(--ease-out); 
-    z-index: 1; /* Nằm dưới Badge */
+    z-index: 1; 
 }
 
-/* KHÓA BADGE: Tuyệt đối không bị che khuất bởi ảnh */
-.card-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 10; pointer-events: none; }
+/* Overlay Elements */
+.card-badges { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 4px; z-index: 10; pointer-events: none; }
 .card-badge { background: var(--bg-base); color: var(--text-primary); font-size: 0.65rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-sm); letter-spacing: 0.05em; border: 1px solid var(--border); display: inline-block; width: max-content; pointer-events: auto;}
 .card-badge.hot { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 
-.card-discount { position: absolute; bottom: 8px; right: 8px; background: var(--accent); color: var(--accent-text); font-weight: 700; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; z-index: 10; pointer-events: none;}
+.card-discount { position: absolute; bottom: 12px; right: 12px; background: var(--accent); color: var(--accent-text); font-weight: 700; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; z-index: 10; pointer-events: none;}
 
+/* Product Information */
 .card-info { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; position: relative; z-index: 2; }
 
 .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; color: var(--text-primary); }
@@ -341,12 +370,12 @@ img { max-width: 100%; display: block; }
 .product-card:active { transform: none !important; }
 
 /* =====================================================
-   GIẢI QUYẾT LỖI ẢNH 3: MODAL (CÂN ĐỐI, DỄ ĐỌC)
+   MODAL IMAGE (TỰ DO THEO VIEWPORT)
    ===================================================== */
 .modal { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     z-index: 1000; display: flex; 
-    align-items: center; /* Đưa Modal lơ lửng ra giữa */
+    align-items: center; 
     justify-content: center; padding: 16px; 
 }
 .modal-overlay { 
@@ -354,10 +383,9 @@ img { max-width: 100%; display: block; }
     background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); 
 }
 
-/* Mobile Content */
 .modal-content { 
     position: relative; background: var(--bg-surface); 
-    width: 90vw; /* Hở mép 2 bên */
+    width: 90vw; 
     max-width: 420px; 
     border-radius: 20px; 
     z-index: 1001; 
@@ -379,15 +407,15 @@ img { max-width: 100%; display: block; }
 
 .modal-grid { display: grid; grid-template-columns: 1fr; }
 
-/* Modal Image Mobile - Động và linh hoạt */
+/* Modal Image Mobile - Giữ nguyên tỷ lệ, không ép cứng */
 .modal-img { 
     width: 100%; 
     height: auto; 
-    aspect-ratio: 16/9; /* Cung cấp tỷ lệ tốt cho hầu hết thiết bị, không ép cứng dải tĩnh */
-    max-height: 50vh; /* Ngăn ảnh lớn làm tràn modal gây cuộn dọc không mong muốn */
-    padding: 0; /* Xóa khoảng trống đệm làm co nhỏ ảnh */
+    aspect-ratio: 16/9; 
+    max-height: 60vh; 
+    padding: 0; 
     box-sizing: border-box; 
-    object-fit: contain; /* KHÔNG CROP ẢNH SẢN PHẨM */
+    object-fit: contain; 
     background: var(--bg-elevated); 
     border-bottom: 1px solid var(--border); 
 }
