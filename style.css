@@ -204,12 +204,12 @@ img { max-width: 100%; display: block; }
    GIẢI QUYẾT LỖI ẢNH 1: FEATURED PRODUCT
    ===================================================== */
 .featured-wrapper { margin-bottom: 40px; }
-.featured-card { display: flex; flex-direction: column; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; }
+.featured-card { display: flex; flex-direction: column; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; height: 100%; }
 
 /* Mobile Featured */
 .featured-card .card-img-wrap { 
     width: 100%; 
-    aspect-ratio: 16/10; 
+    aspect-ratio: 16/9; 
     position: relative; 
     background: var(--bg-elevated); 
     border-bottom: 1px solid var(--border); 
@@ -218,13 +218,13 @@ img { max-width: 100%; display: block; }
     position: absolute; 
     top: 0; left: 0; 
     width: 100%; height: 100%; 
-    padding: 24px; /* Khoảng thở lớn */
-    box-sizing: border-box; /* BẮT BUỘC để padding không làm tràn khung */
-    object-fit: contain; /* TẬN DỤNG KHUNG, KHÔNG CROP */
+    padding: 0; /* Cho ảnh bung full sát mép vùng 16/9 */
+    box-sizing: border-box;
+    object-fit: contain; /* Giữ nguyên toàn bộ chi tiết, không crop */
     z-index: 1;
 }
 
-.featured-card .card-info { padding: 24px; display: flex; flex-direction: column; }
+.featured-card .card-info { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
 .featured-label { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-bg); color: var(--accent); font-weight: 700; font-size: 0.75rem; padding: 6px 12px; border-radius: var(--radius-pill); width: max-content; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em;}
 
 /* Desktop Featured */
@@ -232,20 +232,20 @@ img { max-width: 100%; display: block; }
     .featured-card { flex-direction: row; align-items: stretch; }
     
     .featured-card .card-img-wrap { 
-        width: 55%; 
-        aspect-ratio: auto; 
+        width: 50%; /* Trả lại vùng hiển thị cân đối cho ảnh so với phần text */
+        aspect-ratio: 16/9; 
         border-bottom: none; 
         border-right: 1px solid var(--border); 
-        min-height: 360px;
+        min-height: unset; /* Xóa min-height tĩnh gây lỗi vùng xám */
         position: relative;
     }
     .featured-card .card-img {
-        padding: 40px; /* Ép ảnh nhỏ lại một cách sang trọng */
+        padding: 0; /* Xóa khoảng đệm tĩnh lớn gây bóp nghẹt ảnh */
         box-sizing: border-box;
         object-fit: contain;
     }
     
-    .featured-card .card-info { width: 45%; padding: 48px; justify-content: center; }
+    .featured-card .card-info { width: 50%; padding: 48px; justify-content: center; }
     .featured-card .card-title { font-size: 1.75rem; margin-bottom: 12px; }
     .featured-card .card-desc { display: -webkit-box; font-size: 1rem; margin-bottom: 24px; color: var(--text-secondary); line-height: 1.6;}
     .featured-card .card-price { font-size: 1.8rem; }
@@ -261,12 +261,13 @@ img { max-width: 100%; display: block; }
     background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg); 
     overflow: hidden; display: flex; flex-direction: column; cursor: pointer; 
     transition: var(--transition-micro);
+    height: 100%; /* Cố định flex column cho đồng đều chiều cao thẻ trong row */
 }
 
 .card-img-wrap { 
     position: relative; 
     width: 100%;
-    padding-top: 100%; /* Giữ Grid luôn là hình vuông 1:1 */
+    aspect-ratio: 4/3; /* Sử dụng tỷ lệ 4/3 phù hợp cho đồ công nghệ thay vì vuông 1:1 gây dư xám */
     overflow: hidden; 
     background: var(--bg-elevated); 
     border-bottom: 1px solid var(--border);
@@ -276,19 +277,19 @@ img { max-width: 100%; display: block; }
     position: absolute; 
     top: 0; left: 0; 
     width: 100%; height: 100%; 
-    padding: 16px; /* Cách đều mép 16px */
-    box-sizing: border-box; /* Cực kỳ quan trọng để ảnh nằm gọn trong box vuông */
-    object-fit: contain; /* KHÔNG CROP ẢNH (ngang, dọc, vuông đều đẹp) */
+    padding: 0; /* Xóa padding lọt thỏm, cho ảnh bám sát wrapper */
+    box-sizing: border-box;
+    object-fit: contain; /* Giữ tỷ lệ chuẩn, tuyệt đối không crop */
     transition: transform 300ms var(--ease-out); 
     z-index: 1; /* Nằm dưới Badge */
 }
 
 /* KHÓA BADGE: Tuyệt đối không bị che khuất bởi ảnh */
-.card-badges { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 6px; z-index: 10; pointer-events: none; }
+.card-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 10; pointer-events: none; }
 .card-badge { background: var(--bg-base); color: var(--text-primary); font-size: 0.65rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-sm); letter-spacing: 0.05em; border: 1px solid var(--border); display: inline-block; width: max-content; pointer-events: auto;}
 .card-badge.hot { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 
-.card-discount { position: absolute; bottom: 12px; right: 12px; background: var(--accent); color: var(--accent-text); font-weight: 700; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; z-index: 10; pointer-events: none;}
+.card-discount { position: absolute; bottom: 8px; right: 8px; background: var(--accent); color: var(--accent-text); font-weight: 700; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; z-index: 10; pointer-events: none;}
 
 .card-info { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; position: relative; z-index: 2; }
 
@@ -360,7 +361,7 @@ img { max-width: 100%; display: block; }
     max-width: 420px; 
     border-radius: 20px; 
     z-index: 1001; 
-    max-height: 80vh; 
+    max-height: 90vh; 
     overflow-y: auto; 
     box-shadow: var(--shadow-md); 
     animation: fadeZoomModal 300ms var(--ease-out) forwards; 
@@ -378,12 +379,14 @@ img { max-width: 100%; display: block; }
 
 .modal-grid { display: grid; grid-template-columns: 1fr; }
 
-/* Modal Image Mobile - Vừa khung, không tràn */
+/* Modal Image Mobile - Động và linh hoạt */
 .modal-img { 
     width: 100%; 
-    height: 260px; /* Khống chế tĩnh để không đẩy Text */
-    padding: 24px; /* Khoảng thở */
-    box-sizing: border-box; /* Bắt buộc để padding không làm phình height */
+    height: auto; 
+    aspect-ratio: 16/9; /* Cung cấp tỷ lệ tốt cho hầu hết thiết bị, không ép cứng dải tĩnh */
+    max-height: 50vh; /* Ngăn ảnh lớn làm tràn modal gây cuộn dọc không mong muốn */
+    padding: 0; /* Xóa khoảng trống đệm làm co nhỏ ảnh */
+    box-sizing: border-box; 
     object-fit: contain; /* KHÔNG CROP ẢNH SẢN PHẨM */
     background: var(--bg-elevated); 
     border-bottom: 1px solid var(--border); 
@@ -403,7 +406,7 @@ img { max-width: 100%; display: block; }
     }
     .modal-grid { grid-template-columns: 1fr 1fr; height: 100%; }
     .modal-img { 
-        height: auto; min-height: 400px; padding: 40px; 
+        height: auto; min-height: unset; padding: 0; max-height: 80vh; 
         border-right: 1px solid var(--border); border-bottom: none;
         object-fit: contain; 
     }
