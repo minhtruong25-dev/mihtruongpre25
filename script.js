@@ -116,7 +116,7 @@ function generateCardHTML(p, isFeatured) {
     const badgeClass = p.badge ? p.badge.toLowerCase().trim() : '';
     const badgeStr = p.badge ? `<span class="card-badge ${badgeClass}">${p.badge}</span>` : '';
     
-    const discountStr = p.discount ? `<div class="card-discount">-${p.discount}%</div>` : '';
+    const discountStr = p.discount ? `<span class="card-discount">-${p.discount}%</span>` : '';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
     
@@ -127,9 +127,8 @@ function generateCardHTML(p, isFeatured) {
     return `
         <article class="product-card js-product-card card-reveal ${isFeatured ? 'featured-card' : ''}" data-id="${p.id}" tabindex="0">
             <div class="card-img-wrap">
-                <div class="card-badges">${badgeStr}</div>
+                ${badgeStr ? `<div class="card-badges">${badgeStr}</div>` : ''}
                 <img src="${p.image}" alt="${p.name}" class="card-img" loading="lazy" decoding="async" onerror="${fallback}">
-                ${discountStr}
             </div>
             <div class="card-info">
                 ${labelFeatured}
@@ -140,7 +139,7 @@ function generateCardHTML(p, isFeatured) {
                 </div>
                 <div class="card-price-wrap">
                     <span class="card-price">${price}</span>
-                    <div class="price-old-wrap">${oldPrice}</div>
+                    ${(oldPrice || discountStr) ? `<div class="price-old-wrap">${oldPrice} ${discountStr}</div>` : ''}
                 </div>
                 <button class="card-cta">Xem deal <i class='bx bx-right-arrow-alt'></i></button>
             </div>
@@ -156,24 +155,24 @@ function openModal(id) {
     const body = document.getElementById('modal-body');
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
-    
-    // 💡 ÉP MÀU ĐỎ NỔI BẬT CHO % GIẢM GIÁ TRONG MODAL
-    const discount = p.discount ? `<span style="font-size:0.85rem; color:#fff; font-weight:700; padding:4px 8px; background:var(--danger); border-radius:6px;">-${p.discount}%</span>` : '';
+    const discount = p.discount ? `<span class="card-discount modal-discount">-${p.discount}%</span>` : '';
 
     body.innerHTML = `
         <div class="modal-grid">
-            <img src="${p.image}" class="modal-img" alt="${p.name}">
+            <div class="modal-img-wrap">
+                <img src="${p.image}" class="modal-img" alt="${p.name}">
+            </div>
             <div class="modal-info">
                 <h2 class="modal-title">${p.name}</h2>
-                <div class="card-rating" style="margin-bottom: 16px; font-size: 0.9rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
-                    <i class='bx bxs-star' style="color: var(--accent);"></i> <span>${p.rating || 0} (${p.reviews || 0} đánh giá)</span>
+                <div class="card-rating modal-rating">
+                    <i class='bx bxs-star'></i> <span>${p.rating || 0} (${p.reviews || 0} đánh giá)</span>
                 </div>
-                <div class="card-price-wrap" style="margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
-                    <span class="card-price" style="font-size: 1.6rem; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif;">${price}</span>
-                    ${oldPrice} ${discount}
+                <div class="modal-price-wrap">
+                    <span class="modal-price">${price}</span>
+                    ${(oldPrice || discount) ? `<div class="price-old-wrap">${oldPrice} ${discount}</div>` : ''}
                 </div>
-                <p class="modal-desc">${p.description}</p>
-                <button class="modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl}" data-id="${p.id}">
+                <p class="modal-desc">${p.description || ''}</p>
+                <button class="modal-affiliate-btn js-affiliate-btn" data-link="${p.affiliateUrl || ''}" data-id="${p.id}">
                     Đến nơi bán <i class='bx bx-link-external'></i>
                 </button>
             </div>
