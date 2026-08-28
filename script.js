@@ -112,7 +112,7 @@ function renderProducts() {
 }
 
 function generateCardHTML(p, isFeatured) {
-    // CHỈNH SỬA TÍ HON Ở ĐÂY ĐỂ TRUYỀN CLASS MÀU CHO BADGE DỰA VÀO TEXT GỐC CỦA BẠN (hot, top, sale)
+    // 💡 TẠO CLASS TỰ ĐỘNG THEO CHỮ (hot, top, sale) ĐỂ CSS ĐỔI MÀU
     const badgeClass = p.badge ? p.badge.toLowerCase().trim() : '';
     const badgeStr = p.badge ? `<span class="card-badge ${badgeClass}">${p.badge}</span>` : '';
     
@@ -157,7 +157,7 @@ function openModal(id) {
     const price = p.price ? formatCurrency(p.price) : 'Cập nhật sau';
     const oldPrice = p.oldPrice ? `<span class="card-old-price">${formatCurrency(p.oldPrice)}</span>` : '';
     
-    // Đảm bảo badge giảm giá trong Modal luôn là màu Đỏ (var(--danger))
+    // 💡 ÉP MÀU ĐỎ NỔI BẬT CHO % GIẢM GIÁ TRONG MODAL
     const discount = p.discount ? `<span style="font-size:0.85rem; color:#fff; font-weight:700; padding:4px 8px; background:var(--danger); border-radius:6px;">-${p.discount}%</span>` : '';
 
     body.innerHTML = `
@@ -278,9 +278,6 @@ function setupBackToTopObserver() {
     }
 }
 
-// =====================================================
-// SCROLL REVEAL (NO LAG, NATIVE SCROLL)
-// =====================================================
 function initScrollAnimations() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.querySelectorAll('.js-product-card, .trust-section').forEach(el => el.classList.add('is-visible'));
@@ -298,7 +295,6 @@ function initScrollAnimations() {
                 });
             });
         }, { 
-            // Tải trước 600px để mobile scroll không bị chờ
             rootMargin: '600px 0px 600px 0px', 
             threshold: 0 
         });
